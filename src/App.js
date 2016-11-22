@@ -15,9 +15,8 @@ import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import Subheader from 'material-ui/Subheader';
 
-const style = {
+let style = {
   paper: {
     height: '60vh',
     width: '100vw',
@@ -54,9 +53,40 @@ const style = {
 injectTapEventPlugin();
 
 class ChatBox extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      messages: [
+        {
+          sender: 'Laura',
+          icon: 'http://www.material-ui.com/images/uxceo-128.jpg',
+          message: 'Hey there!'
+        },
+        {
+          sender: '',
+          icon: 'http://www.material-ui.com/images/kolage-128.jpg',
+          message: 'Yo!'
+        }
+      ]
+    };
+
+  }
+
+  toggleChatBox = () => {
+    if (this.props.isChatBoxOpen) {
+      console.log('close chat box');
+      style.chatBox.height = '';
+    } else {
+      console.log('open chat box');
+      style.chatBox.height = '60vh';
+    }
+    this.props.toggleChatBoxOpen();
+  }
+  
+
   render() {
 
-    var messages = this.props.messages.map((message, i) => {
+    var messages = this.state.messages.map((message, i) => {
       // if there is a sender defined, else the user is sending
       if (message.sender) {
         return (
@@ -84,15 +114,28 @@ class ChatBox extends Component {
 
     return (
       <List style={style.chatBox}>
-        <AppBar
-          style={style.chatBoxHeader}
-          title={<span style={style.title}>Chat</span>}
-          showMenuIconButton={false}
-          iconElementRight={<IconButton><NavigationClose /></IconButton>}
-          onRightIconButtonTouchTap={() => console.log('Close chat window')}
-        />
+        {
+          this.props.isChatBoxOpen ? 
+            <AppBar
+              style={style.chatBoxHeader}
+              title={<span style={style.title}>Chat</span>}
+              showMenuIconButton={false}
+              iconElementRight={<IconButton><NavigationClose /></IconButton>}
+              onRightIconButtonTouchTap={this.toggleChatBox}
+              onTitleTouchTap={this.toggleChatBox}
+            />
+          :
+            <AppBar
+              style={style.chatBoxHeader}
+              title={<span style={style.title}>Chat</span>}
+              showMenuIconButton={false}
+              onTitleTouchTap={this.toggleChatBox}
 
-        {messages}
+            />
+        }
+
+
+        {this.props.isChatBoxOpen ? messages : <span />}
 
       </List>
     );
@@ -104,21 +147,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [
-        {
-          sender: 'Laura',
-          icon: 'http://www.material-ui.com/images/uxceo-128.jpg',
-          message: 'Hey there!'
-        },
-        {
-          sender: '',
-          icon: 'http://www.material-ui.com/images/kolage-128.jpg',
-          message: 'Yo!'
-        }
-      ]
-    };
-
+      isChatBoxOpen: true,
+    }
   }
+
+  toggleChatBoxOpen = () => this.setState({isChatBoxOpen: !this.state.isChatBoxOpen})
 
   render() {
 
@@ -134,7 +167,7 @@ class App extends Component {
             <p>Test</p>
           </Paper>
 
-          <ChatBox messages={this.state.messages} sendMessage={() => {}}/>
+          <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
 
         </div>
       </MuiThemeProvider>
