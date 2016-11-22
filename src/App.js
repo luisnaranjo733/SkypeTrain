@@ -164,7 +164,7 @@ class App extends Component {
             showMenuIconButton={false}
           />
           <Paper style={style.paper} zDepth={3}>
-            <p>Test</p>
+            <h1>Task goes here</h1>
           </Paper>
 
           <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
