@@ -1,1 +1,1 @@
-https://github.com/luisnaranjo733/SkypeTrain
+https://luisnaranjo733.github.io/SkypeTrain/
