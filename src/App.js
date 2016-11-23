@@ -37,7 +37,7 @@ let style = {
     right: '0',
     width: '90vw',
     
-    height: CHAT_WINDOW_HEIGHT,
+    height: '',
     marginLeft: 'auto',
     marginRight: 'auto',
     paddingTop: '0',
