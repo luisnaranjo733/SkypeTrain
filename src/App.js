@@ -19,7 +19,19 @@ import Divider from 'material-ui/Divider';
 import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
+// var wordsearch = require('wordsearch');
+import wordsearch from 'wordsearch';
+
 const CHAT_WINDOW_HEIGHT = '90vh'
+
+const WORD_SEARCH = {
+  words: [
+    'research', 'science', 'tech', 'model', 'anova', 'kazoo', 'theory',
+    'UX', 'design', 'context', 'stats'
+  ],
+  width: 10,
+  height: 10
+}
 
 let style = {
   paper: {
@@ -162,6 +174,10 @@ class App extends Component {
     this.state = {
       isChatBoxOpen: false,
     }
+    var search = wordsearch(WORD_SEARCH.words, WORD_SEARCH.width, WORD_SEARCH.height);
+    console.log(search);
+    // search.grid.forEach(function(row) { console.log(row.join(' ')); } );
+    search.solved.forEach(function(row) { console.log(row.join(' ')); } );
   }
 
   toggleChatBoxOpen = () => this.setState({isChatBoxOpen: !this.state.isChatBoxOpen})
