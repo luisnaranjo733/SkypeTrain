@@ -16,6 +16,11 @@ import Paper from 'material-ui/Paper';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 
+import Badge from 'material-ui/Badge';
+import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
+
+const CHAT_WINDOW_HEIGHT = '90vh'
+
 let style = {
   paper: {
     height: '60vh',
@@ -25,13 +30,16 @@ let style = {
   },
 
   chatBox: {
+    display: 'block',
     position: 'fixed',
     bottom: '0',
+    left: '0',
     right: '0',
-    width: '30vw',
+    width: '90vw',
     
-    height: '60vh',
-    marginRight: '1.5em',
+    height: CHAT_WINDOW_HEIGHT,
+    marginLeft: 'auto',
+    marginRight: 'auto',
     paddingTop: '0',
 
     backgroundColor: '#EEEEEE',
@@ -45,7 +53,7 @@ let style = {
   },
   listItem: {
     color: '#212121',
-  }
+  },
 };
 
 // Needed for onTouchTap
@@ -78,7 +86,7 @@ class ChatBox extends Component {
       style.chatBox.height = '';
     } else {
       console.log('open chat box');
-      style.chatBox.height = '60vh';
+      style.chatBox.height = CHAT_WINDOW_HEIGHT;
     }
     this.props.toggleChatBoxOpen();
   }
@@ -127,13 +135,18 @@ class ChatBox extends Component {
           :
             <AppBar
               style={style.chatBoxHeader}
-              title={<span style={style.title}>Chat</span>}
+              title={
+                <span style={style.title}>Chat (4)</span>
+              }
               showMenuIconButton={false}
               onTitleTouchTap={this.toggleChatBox}
-
+              iconElementRight={
+                <IconButton tooltip="Notifications">
+                  <NotificationsIcon />
+                </IconButton>
+              }
             />
         }
-
 
         {this.props.isChatBoxOpen ? messages : <span />}
 
