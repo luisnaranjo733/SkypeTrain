@@ -168,26 +168,21 @@ class ChatBox extends Component {
 }
 
 class WordSearchGrid extends Component {
-
-  getRandomLetter() {
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    return possible.charAt(Math.floor(Math.random() * possible.length));
+  constructor(props) {
+    super(props);
+    this.state = {
+      wordSearch: wordsearch(this.props.words, this.props.width, this.props.height)
+    }
+    // search.grid.forEach(function(row) { console.log(row.join(' ')); } );
+    this.state.wordSearch.solved.forEach(function(row) { console.log(row.join(' ')); } );
   }
 
-  render() {
-    let grid = [];
-    for (let i = 0; i < 10; i++) {
-      if (!grid[i]) {
-        grid[i] = [];
-      }
-      for (let j = 0; j < 10; j++) { 
-        grid[i][j] = this.getRandomLetter();
-      }
-    }
 
+  render() {
+    console.log(this.state.wordSearch);
     return (
       <div id="grid">
-        {grid.map((row, i) => {
+        {this.state.wordSearch.solved.map((row, i) => {
           return (
             <div key={i} className="row">
               {row.map((letter, i) => {
@@ -209,10 +204,6 @@ class App extends Component {
     this.state = {
       isChatBoxOpen: false,
     }
-    var search = wordsearch(WORD_SEARCH.words, WORD_SEARCH.width, WORD_SEARCH.height);
-    console.log(search);
-    // search.grid.forEach(function(row) { console.log(row.join(' ')); } );
-    search.solved.forEach(function(row) { console.log(row.join(' ')); } );
   }
 
   toggleChatBoxOpen = () => this.setState({isChatBoxOpen: !this.state.isChatBoxOpen})
@@ -228,7 +219,7 @@ class App extends Component {
             showMenuIconButton={false}
           />
 
-          <WordSearchGrid />
+          <WordSearchGrid words={WORD_SEARCH.words} height={WORD_SEARCH.height} width={WORD_SEARCH.width}/>
 
           <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
 
