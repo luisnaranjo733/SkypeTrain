@@ -168,21 +168,10 @@ class ChatBox extends Component {
 }
 
 class WordSearchGrid extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      wordSearch: wordsearch(this.props.words, this.props.width, this.props.height)
-    }
-    // search.grid.forEach(function(row) { console.log(row.join(' ')); } );
-    this.state.wordSearch.solved.forEach(function(row) { console.log(row.join(' ')); } );
-  }
-
-
   render() {
-    console.log(this.state.wordSearch);
     return (
       <div id="grid">
-        {this.state.wordSearch.solved.map((row, i) => {
+        {this.props.wordSearch.solved.map((row, i) => {
           return (
             <div key={i} className="row">
               {row.map((letter, i) => {
@@ -190,8 +179,34 @@ class WordSearchGrid extends Component {
               })}
             </div>
           )
-
         })}
+      </div>
+    );
+  }
+}
+
+class WordSearchWords extends Component {
+  render() {
+    return (
+      <h1>Word search!</h1>
+    );
+  }
+}
+
+class WordSearch extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      wordSearch: wordsearch(this.props.words, this.props.width, this.props.height)
+    }
+  }
+
+
+  render() {
+    return (
+      <div className="wordSearch">
+        <WordSearchGrid wordSearch={this.state.wordSearch}/>
+        <WordSearchWords />
       </div>
     );
   }
@@ -219,7 +234,7 @@ class App extends Component {
             showMenuIconButton={false}
           />
 
-          <WordSearchGrid words={WORD_SEARCH.words} height={WORD_SEARCH.height} width={WORD_SEARCH.width}/>
+          <WordSearch words={WORD_SEARCH.words} height={WORD_SEARCH.height} width={WORD_SEARCH.width}/>
 
           <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
 
