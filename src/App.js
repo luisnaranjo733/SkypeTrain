@@ -10,14 +10,14 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import Avatar from 'material-ui/Avatar';
-
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-
 import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
+
+import { Grid, Row, Col } from 'react-bootstrap';
 
 // var wordsearch = require('wordsearch');
 import wordsearch from 'wordsearch';
@@ -171,7 +171,7 @@ class WordSearchGrid extends Component {
   render() {
     return (
       <div id="grid">
-        {this.props.wordSearch.solved.map((row, i) => {
+        {this.props.wordSearch.grid.map((row, i) => {
           return (
             <div key={i} className="row">
               {row.map((letter, i) => {
@@ -188,7 +188,14 @@ class WordSearchGrid extends Component {
 class WordSearchWords extends Component {
   render() {
     return (
-      <h1>Word search!</h1>
+      <div id="word-search-words">
+        <h1>Word search</h1>
+        <ul>
+          {this.props.words.map((word, i) => {
+            return <li key={i}>{word}</li>
+          })}
+        </ul>
+      </div>
     );
   }
 }
@@ -201,14 +208,20 @@ class WordSearch extends Component {
     }
   }
 
-
   render() {
     return (
-      <div className="wordSearch">
-        <WordSearchGrid wordSearch={this.state.wordSearch}/>
-        <WordSearchWords />
-      </div>
+      <Grid>
+        <Row className="show-grid">
+          <Col xs={12} md={8}>
+            <WordSearchGrid wordSearch={this.state.wordSearch}/>
+          </Col>
+          <Col xs={6} md={4}>
+            <WordSearchWords words={this.props.words}/>
+          </Col>
+        </Row>
+      </Grid>
     );
+
   }
 }
 

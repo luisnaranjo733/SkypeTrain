@@ -4,10 +4,15 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.show-grid {
+  padding-top: 3em;
+}
+
 #grid {
   border: 1px solid black;
   /*height: 60vh;*/
-  padding: 5em;
+  /*padding: 1em;*/
+
 }
 
 .row {
@@ -19,9 +24,13 @@ body {
 }
 
 .letter {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   min-width: 40px;
   min-height: 40px;
   text-align: center;
   line-height: 40px;
+}
+
+#word-search-words {
+  padding-left: 5em;
 }
