@@ -3,3 +3,25 @@ body {
   padding: 0;
   font-family: 'Roboto', sans-serif;
 }
+
+#grid {
+  border: 1px solid black;
+  height: 60vh;
+  padding: 5em;
+}
+
+.row {
+  display: flex;
+  flex-direction: row; /* default val for clarity */
+  flex-wrap: nowrap; /* default val for clarity */
+  justify-content: center;
+  /*border: 1px solid green;*/
+}
+
+.letter {
+  border: 1px solid black;
+  min-width: 40px;
+  min-height: 40px;
+  text-align: center;
+  line-height: 40px;
+}

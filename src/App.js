@@ -168,11 +168,36 @@ class ChatBox extends Component {
 }
 
 class WordSearchGrid extends Component {
+
+  getRandomLetter() {
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    return possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
   render() {
+    let grid = [];
+    for (let i = 0; i < 10; i++) {
+      if (!grid[i]) {
+        grid[i] = [];
+      }
+      for (let j = 0; j < 10; j++) { 
+        grid[i][j] = this.getRandomLetter();
+      }
+    }
+
     return (
-      <Paper style={style.paper} zDepth={3}>
-        <h1>Task goes here</h1>
-      </Paper>
+      <div id="grid">
+        {grid.map((row, i) => {
+          return (
+            <div key={i} className="row">
+              {row.map((letter, i) => {
+                return <span key={i} className="letter">{letter}</span>
+              })}
+            </div>
+          )
+
+        })}
+      </div>
     );
   }
 }
