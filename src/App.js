@@ -167,6 +167,16 @@ class ChatBox extends Component {
   }
 }
 
+class WordSearchGrid extends Component {
+  render() {
+    return (
+      <Paper style={style.paper} zDepth={3}>
+        <h1>Task goes here</h1>
+      </Paper>
+    );
+  }
+}
+
 
 class App extends Component {
   constructor(props) {
@@ -192,9 +202,8 @@ class App extends Component {
             iconClassNameRight="muidocs-icon-navigation-expand-more"
             showMenuIconButton={false}
           />
-          <Paper style={style.paper} zDepth={3}>
-            <h1>Task goes here</h1>
-          </Paper>
+
+          <WordSearchGrid />
 
           <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
 
