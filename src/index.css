@@ -24,11 +24,12 @@ body {
 }
 
 .letter {
-  /*border: 1px solid black;*/
-  min-width: 40px;
-  min-height: 40px;
+  /*border: 0.5px solid red;*/
+  min-width: 60px;
+  min-height: 60px;
   text-align: center;
-  line-height: 40px;
+  line-height: 60px;
+  font-family: 'Muli', sans-serif;
 }
 
 #word-search-words {
