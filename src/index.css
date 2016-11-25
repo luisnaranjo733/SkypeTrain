@@ -43,3 +43,8 @@ body {
 #word-search-words {
   padding-left: 5em;
 }
+
+#word-search-words > ul {
+  overflow: auto;
+  height: 70vh;
+}
