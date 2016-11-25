@@ -94,10 +94,8 @@ class ChatBox extends Component {
 
   toggleChatBox = () => {
     if (this.props.isChatBoxOpen) {
-      console.log('close chat box');
       style.chatBox.height = '';
     } else {
-      console.log('open chat box');
       style.chatBox.height = CHAT_WINDOW_HEIGHT;
     }
     this.props.toggleChatBoxOpen();
@@ -170,7 +168,9 @@ class ChatBox extends Component {
 class WordSearchGrid extends Component {
 
   letterClicked(i, j) {
-    var letter = this.props.wordSearch.grid[i][j];
+    var cell = this.props.wordSearch.grid[i][j];
+    this.props.toggleCellHighlighting(i, j);
+    console.log(cell)
   }
 
   render() {
@@ -179,8 +179,8 @@ class WordSearchGrid extends Component {
         {this.props.wordSearch.grid.map((row, i) => {
           return (
             <div key={i} className="row">
-              {row.map((letter, j) => {
-                return <span key={j} className="letter" onClick={this.letterClicked.bind(this, i, j)}>{letter}</span>
+              {row.map((cell, j) => {
+                return <span key={j} className={cell.highlight ? 'highlighted-letter' : 'letter'} onClick={this.letterClicked.bind(this, i, j)}>{cell.letter}</span>
               })}
             </div>
           )
@@ -208,9 +208,28 @@ class WordSearchWords extends Component {
 class WordSearch extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      wordSearch: wordsearch(this.props.words, this.props.width, this.props.height)
+    let wordSearch = wordsearch(this.props.words, this.props.width, this.props.height);
+
+    for (let i=0; i < wordSearch.grid.length; i++) {
+      for(let j=0; j < wordSearch.grid[i].length; j++) {
+        wordSearch.grid[i][j] = {
+          letter: wordSearch.grid[i][j],
+          highlight: false,
+        }
+      }
     }
+
+    this.state = {
+      wordSearch: wordSearch
+    }
+    this.toggleCellHighlighting = this.toggleCellHighlighting.bind(this);
+  }
+
+  toggleCellHighlighting(i, j) {
+    console.log(`toggle cell highlight ${i} ${j}`);
+    var newWordSearch = Object.assign({}, this.state.wordSearch);
+    newWordSearch.grid[i][j].highlight = !newWordSearch.grid[i][j].highlight;
+    this.setState({wordSearch: newWordSearch});
   }
 
   render() {
@@ -218,7 +237,7 @@ class WordSearch extends Component {
       <Grid>
         <Row className="show-grid">
           <Col xs={12} md={8}>
-            <WordSearchGrid wordSearch={this.state.wordSearch}/>
+            <WordSearchGrid wordSearch={this.state.wordSearch} toggleCellHighlighting={this.toggleCellHighlighting}/>
           </Col>
           <Col xs={6} md={4}>
             <WordSearchWords words={this.props.words}/>
