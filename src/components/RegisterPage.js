@@ -15,11 +15,10 @@ export default class RegisterPage extends Component {
       formValid: false,
       participantName: ''
     };
-
-    this.participantsRef = firebase.database().ref('participants');
   }
 
   componentDidMount() {
+    this.participantsRef = firebase.database().ref('participants');
     this.participantsRef.on('value', (snapshot) => {
       console.log(snapshot.val());
     });

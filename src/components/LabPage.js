@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import './App.css';
+import _ from 'lodash';
 import firebase from 'firebase';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -13,7 +14,6 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
-// var wordsearch = require('wordsearch');
 import wordsearch from 'wordsearch';
 
 const CHAT_WINDOW_HEIGHT = '90vh'
@@ -193,6 +193,7 @@ class WordSearch extends Component {
   constructor(props) {
     super(props);
     let wordSearch = wordsearch(this.props.words, this.props.width, this.props.height);
+    console.log(wordSearch);
 
     for (let i=0; i < wordSearch.grid.length; i++) {
       for(let j=0; j < wordSearch.grid[i].length; j++) {
@@ -202,6 +203,7 @@ class WordSearch extends Component {
         }
       }
     }
+
 
     this.state = {
       wordSearch: wordSearch
@@ -223,7 +225,9 @@ class WordSearch extends Component {
             <WordSearchGrid wordSearch={this.state.wordSearch} toggleCellHighlighting={this.toggleCellHighlighting}/>
           </Col>
           <Col xs={6} md={4}>
-            <WordSearchWords words={this.props.words}/>
+            <WordSearchWords words={this.props.words.filter((word) => {
+              return !_.includes(this.state.wordSearch.unplaced, word);
+            })}/>
           </Col>
         </Row>
       </Grid>
@@ -244,9 +248,19 @@ export default class LabPage extends Component {
   toggleChatBoxOpen = () => this.setState({isChatBoxOpen: !this.state.isChatBoxOpen})
 
   componentDidMount() {
-    console.log('component did mount')
+    firebase.database().ref('wordSearch').set({
+      words: ['christmas', 'cookies', 'gingerbread', 'tree', 'bells', 
+        'snowman', 'santa', 'star', 'ornament', 'reindeer', 'stockings',
+        'rudolph', 'dasher', 'dancer', 'prancer', 'vixen', 'comet',
+        'cupid', 'donner', 'blitzen', 'carols', 'december', 'family',
+        'mistletoe', 'snowflake', 'eggnog', 'holiday', 'decorations',
+        'holly', 'chimney', 'wreath', 'merry', 'candycane', 'lights',
+        'elf', 'peace'
+      ],
+      height: 25,
+      width: 25
+    })
     firebase.database().ref('wordSearch').on('value', (snapshot) => {
-      console.log(snapshot.val());
       this.setState({wordSearchParams: snapshot.val()});
     });
   }
@@ -257,8 +271,6 @@ export default class LabPage extends Component {
   }
 
   render() {
-    console.log('render');
-    console.log(this.state.wordSearchParams)
     return (
 
         <div>       

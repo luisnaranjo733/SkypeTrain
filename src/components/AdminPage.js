@@ -15,9 +15,9 @@ export default class AdminPage extends Component {
   }
 
   componentDidMount() {
-    // this.settingsRef.child('chatEvents').push({
-    //     event: true
-    // });
+    this.settingsRef.child('chatEvents').push({
+        event: true
+    });
 
     this.settingsRef.on('value', (snapshot) => {
       console.log(snapshot.val());
