@@ -8,7 +8,7 @@ import firebase from 'firebase';
 
 export default class RegisterPage extends Component {
   constructor(props, context) {
-    super(props);
+    super(props, context);
     this.context = context;
 
     this.state = {
@@ -49,7 +49,7 @@ export default class RegisterPage extends Component {
 
   render() {
     return (
-      <div style={{paddingTop: '0.5em'}}>
+      <div>
         <Card>
           <CardTitle title="Introduction" subtitle="Typing Lab" />
           <CardText>

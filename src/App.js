@@ -4,9 +4,22 @@ import AppBar from 'material-ui/AppBar';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
+import FlatButton from 'material-ui/FlatButton';
 
 class App extends Component {
+
+  constructor(props,context) {
+    super(props, context);
+    this.context = context;
+  }
+
+  goToSettings = () => {
+    this.context.router.push('/admin');
+  }
+
+  goHome = () => {
+    this.context.router.push('/');
+  }
 
   render() {
     return (
@@ -15,8 +28,10 @@ class App extends Component {
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <AppBar
               title="Typing Frenzy Experiment"
-              iconClassNameRight="muidocs-icon-navigation-expand-more"
+              onTitleTouchTap={this.goHome}
               showMenuIconButton={false}
+              iconElementRight={<FlatButton label="Settings" />}
+              onRightIconButtonTouchTap={this.goToSettings}
             />
           </MuiThemeProvider>
         </header>
@@ -29,5 +44,5 @@ class App extends Component {
     );
   }
 }
-
+App.contextTypes = {router: React.PropTypes.object};
 export default App;

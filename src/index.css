@@ -5,7 +5,7 @@ body {
 }
 
 .show-grid {
-  padding-top: 3em;
+  padding-top: 1.5em;
 }
 
 #grid {
@@ -24,19 +24,19 @@ body {
 }
 
 .letter {
-  min-width: 60px;
-  min-height: 60px;
+  width: 1.95em;
+  height: 1.95em;
   text-align: center;
-  line-height: 60px;
+  line-height: 1.95em;
   font-family: 'Muli', sans-serif;
 }
 
 .highlighted-letter {
   border: 0.5px solid black;
-  min-width: 60px;
-  min-height: 60px;
+  width: 1.95em;
+  height: 1.95em;
   text-align: center;
-  line-height: 60px;
+  line-height: 1.95em;
   font-family: 'Muli', sans-serif;
 }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import './App.css';
-
+import firebase from 'firebase';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import IconButton from 'material-ui/IconButton';
@@ -17,15 +17,6 @@ import { Grid, Row, Col } from 'react-bootstrap';
 import wordsearch from 'wordsearch';
 
 const CHAT_WINDOW_HEIGHT = '90vh'
-
-const WORD_SEARCH = {
-  words: [
-    'research', 'science', 'tech', 'model', 'anova', 'kazoo', 'theory',
-    'UX', 'design', 'context', 'stats'
-  ],
-  width: 10,
-  height: 10
-}
 
 let style = {
   paper: {
@@ -252,17 +243,30 @@ export default class LabPage extends Component {
 
   toggleChatBoxOpen = () => this.setState({isChatBoxOpen: !this.state.isChatBoxOpen})
 
-  render() {
+  componentDidMount() {
+    console.log('component did mount')
+    firebase.database().ref('wordSearch').on('value', (snapshot) => {
+      console.log(snapshot.val());
+      this.setState({wordSearchParams: snapshot.val()});
+    });
+  }
 
+  componentWillUnmount() {
+    //unregister listeners
+    firebase.database().ref('wordSearch').off();
+  }
+
+  render() {
+    console.log('render');
+    console.log(this.state.wordSearchParams)
     return (
 
-        <div>
-
-
-          <WordSearch words={WORD_SEARCH.words} height={WORD_SEARCH.height} width={WORD_SEARCH.width}/>
-
+        <div>       
+          {this.state.wordSearchParams ? 
+            <WordSearch words={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height} width={this.state.wordSearchParams.width}/>
+            : <p>Loading</p>
+          }
           <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
-
         </div>
       
     );
