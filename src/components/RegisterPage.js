@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router'
 
 import RaisedButton from 'material-ui/RaisedButton';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Card, CardTitle, CardText} from 'material-ui/Card';
 import TextField from 'material-ui/TextField';
-import Paper from 'material-ui/Paper';
-import FlatButton from 'material-ui/FlatButton';
 
 import firebase from 'firebase';
 

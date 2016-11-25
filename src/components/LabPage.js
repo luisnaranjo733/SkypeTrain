@@ -3,18 +3,12 @@ import React, { Component } from 'react';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import Avatar from 'material-ui/Avatar';
 import AppBar from 'material-ui/AppBar';
-import Paper from 'material-ui/Paper';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import Badge from 'material-ui/Badge';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Grid, Row, Col } from 'react-bootstrap';
@@ -169,7 +163,6 @@ class ChatBox extends Component {
 class WordSearchGrid extends Component {
 
   letterClicked(i, j) {
-    var cell = this.props.wordSearch.grid[i][j];
     this.props.toggleCellHighlighting(i, j);
   }
 
