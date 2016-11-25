@@ -168,14 +168,19 @@ class ChatBox extends Component {
 }
 
 class WordSearchGrid extends Component {
+
+  letterClicked(i, j) {
+    var letter = this.props.wordSearch.grid[i][j];
+  }
+
   render() {
     return (
       <div id="grid">
         {this.props.wordSearch.grid.map((row, i) => {
           return (
             <div key={i} className="row">
-              {row.map((letter, i) => {
-                return <span key={i} className="letter">{letter}</span>
+              {row.map((letter, j) => {
+                return <span key={j} className="letter" onClick={this.letterClicked.bind(this, i, j)}>{letter}</span>
               })}
             </div>
           )
