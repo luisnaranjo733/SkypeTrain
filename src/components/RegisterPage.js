@@ -7,6 +7,8 @@ import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import FlatButton from 'material-ui/FlatButton';
 
+import firebase from 'firebase';
+
 export default class RegisterPage extends Component {
   constructor(props, context) {
     super(props);
@@ -14,15 +16,36 @@ export default class RegisterPage extends Component {
 
     this.state = {
       formValid: false,
+      participantName: ''
     };
+
+    this.participantsRef = firebase.database().ref('participants');
+  }
+
+  componentDidMount() {
+    this.participantsRef.on('value', (snapshot) => {
+      console.log(snapshot.val());
+    });
+  }
+
+  componentWillUnmount() {
+    //unregister listeners
+    firebase.database().ref('participants').off();
   }
 
   validateForm = (e) => {
-    this.setState({formValid: e.target.value !== ""});
+    this.setState({
+      formValid: e.target.value !== "",
+      participantName: e.target.value,
+    });
   }
 
   submitButtonPressed = () => {
     if (this.state.formValid) {
+      this.participantsRef.push({
+        name: this.state.participantName,
+        labStartTime: firebase.database.ServerValue.TIMESTAMP
+      });
       this.context.router.push('/lab');
     }
   }  
