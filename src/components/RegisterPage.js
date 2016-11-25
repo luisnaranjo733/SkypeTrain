@@ -1,14 +1,60 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router'
-import RaisedButton from 'material-ui/RaisedButton';
 
-export default class extends Component {
+import RaisedButton from 'material-ui/RaisedButton';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import TextField from 'material-ui/TextField';
+import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
+
+export default class RegisterPage extends Component {
+  constructor(props, context) {
+    super(props);
+    this.context = context;
+
+    this.state = {
+      formValid: false,
+    };
+  }
+
+  validateForm = (e) => {
+    this.setState({formValid: e.target.value !== ""});
+  }
+
+  submitButtonPressed = () => {
+    if (this.state.formValid) {
+      this.context.router.push('/lab');
+    }
+  }  
+
   render() {
     return (
-      <div>
-        <h1>Register</h1>
-        <Link to="/lab"><RaisedButton label="Default" primary={true}></RaisedButton></Link>
+      <div style={{paddingTop: '0.5em'}}>
+        <Card>
+          <CardTitle title="Introduction" subtitle="Typing Lab" />
+          <CardText>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
+            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
+            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+          </CardText>
+
+          <TextField
+            style={{paddingLeft: '1em'}}
+            hintText="Full name"
+            floatingLabelText="Participant name"
+            floatingLabelFixed={false}
+            errorText={this.state.formValid ? '' : 'This field is required'}
+            onChange={this.validateForm}
+          />
+          <br/><br/>
+          <RaisedButton onClick={this.submitButtonPressed} disabled={!this.state.formValid} style={{paddingLeft: '1em'}} label="Begin lab" primary={true}></RaisedButton>
+          <br/>
+        </Card>
+
+        
       </div>
     );
   }
 }
+RegisterPage.contextTypes = {router: React.PropTypes.object};
