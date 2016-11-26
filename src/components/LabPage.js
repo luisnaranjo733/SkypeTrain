@@ -153,13 +153,33 @@ class ChatBox extends Component {
 
 class WordSearchGrid extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      mouseDown: false,
+    };
+  }
+
   letterClicked(i, j) {
     this.props.toggleCellHighlighting(i, j);
   }
 
+  mouseDown = (e) => {
+    e.preventDefault();
+    console.log('mouse down');
+    this.setState({mouseDown: true})
+  }
+
+  mouseUp = (e) => {
+    e.preventDefault();
+    console.log('mouse up')
+    this.setState({mouseDown: false})
+  }
+
   render() {
     return (
-      <div id="grid">
+      <div id="grid" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp}>
+        {this.state.mouseDown ? <p>Mouse down</p> : <p>Mouse up</p>}
         {this.props.wordSearch.grid.map((row, i) => {
           return (
             <div key={i} className="row">
