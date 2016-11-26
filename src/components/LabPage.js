@@ -157,6 +157,7 @@ class WordSearchGrid extends Component {
     super(props);
     this.state = {
       mouseDown: false,
+      selectedLetters: []
     };
   }
 
@@ -174,12 +175,41 @@ class WordSearchGrid extends Component {
   mouseUp = (e) => {
     e.preventDefault();
     this.setState({mouseDown: false})
+
+    // unhighlight letters in queue
+    this.state.selectedLetters.forEach((cell) => {
+      this.props.toggleCellHighlighting(cell.i, cell.j);
+    })
+    // reset queue in state
+    this.setState({
+      selectedLetters: []
+    });
   }
 
   mouseEnter(i, j, e) {
     if (this.state.mouseDown) {
+      // select letter
       let cell = this.props.wordSearch.grid[i][j];
       console.log(cell)
+
+      // if combined queue in state is a valid answer:
+      //    highlight
+
+      // else mark letter
+      this.props.toggleCellHighlighting(i, j);
+
+      // add letter to queue in state
+      this.setState({
+        selectedLetters: _.concat(this.state.selectedLetters, cell)
+      });
+    }
+  }
+
+  getCellClass = (cell) => {
+    if (cell.highlight) {
+      return 'highlighted-letter';
+    } else {
+      return 'letter';
     }
   }
 
@@ -192,7 +222,7 @@ class WordSearchGrid extends Component {
             <div key={i} className="row">
               {row.map((cell, j) => {
                 return <span onMouseEnter={this.mouseEnter.bind(this, i, j)}  onMouseDown={this.mouseDown.bind(this, i ,j)}
-                  key={j} className={cell.highlight ? 'highlighted-letter' : 'letter'}
+                  key={j} className={this.getCellClass(cell)}
                 >{cell.letter}</span>
               })}
             </div>
@@ -229,6 +259,8 @@ class WordSearch extends Component {
         wordSearch.grid[i][j] = {
           letter: wordSearch.grid[i][j],
           highlight: false,
+          i: i,
+          j: j
         }
       }
     }

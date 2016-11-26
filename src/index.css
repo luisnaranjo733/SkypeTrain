@@ -32,11 +32,11 @@ body {
 }
 
 .highlighted-letter {
-  border: 0.5px solid black;
-  width: 1.95em;
-  height: 1.95em;
+  background-color: grey;
+  width: 1.70em;
+  height: 1.70em;
   text-align: center;
-  line-height: 1.95em;
+  line-height: 1.70em;
   font-family: 'Muli', sans-serif;
 }
 
