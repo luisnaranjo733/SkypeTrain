@@ -176,6 +176,13 @@ class WordSearchGrid extends Component {
     this.setState({mouseDown: false})
   }
 
+  mouseEnter(i, j, e) {
+    if (this.state.mouseDown) {
+      console.log(`${i} ${j}`);
+    }
+    
+  }
+
   render() {
     return (
       <div id="grid" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp}>
@@ -184,7 +191,7 @@ class WordSearchGrid extends Component {
           return (
             <div key={i} className="row">
               {row.map((cell, j) => {
-                return <span key={j} className={cell.highlight ? 'highlighted-letter' : 'letter'} onClick={this.letterClicked.bind(this, i, j)}>{cell.letter}</span>
+                return <span onMouseEnter={this.mouseEnter.bind(this, i, j)} key={j} className={cell.highlight ? 'highlighted-letter' : 'letter'} onClick={this.letterClicked.bind(this, i, j)}>{cell.letter}</span>
               })}
             </div>
           )
