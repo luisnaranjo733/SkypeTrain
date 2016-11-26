@@ -164,34 +164,37 @@ class WordSearchGrid extends Component {
     this.props.toggleCellHighlighting(i, j);
   }
 
-  mouseDown = (e) => {
+  mouseDown = (i, j, e) => {
     e.preventDefault();
-    console.log('mouse down');
     this.setState({mouseDown: true})
+      let cell = this.props.wordSearch.grid[i][j];
+      console.log(cell)
   }
 
   mouseUp = (e) => {
     e.preventDefault();
-    console.log('mouse up')
     this.setState({mouseDown: false})
   }
 
   mouseEnter(i, j, e) {
     if (this.state.mouseDown) {
-      console.log(`${i} ${j}`);
+      // console.log(`${i} ${j}`);
+      let cell = this.props.wordSearch.grid[i][j];
+      console.log(cell)
     }
-    
   }
 
   render() {
     return (
-      <div id="grid" onMouseDown={this.mouseDown} onMouseUp={this.mouseUp}>
+      <div id="grid"  onMouseUp={this.mouseUp}>
         {this.state.mouseDown ? <p>Mouse down</p> : <p>Mouse up</p>}
         {this.props.wordSearch.grid.map((row, i) => {
           return (
             <div key={i} className="row">
               {row.map((cell, j) => {
-                return <span onMouseEnter={this.mouseEnter.bind(this, i, j)} key={j} className={cell.highlight ? 'highlighted-letter' : 'letter'} onClick={this.letterClicked.bind(this, i, j)}>{cell.letter}</span>
+                return <span onMouseEnter={this.mouseEnter.bind(this, i, j)}  onMouseDown={this.mouseDown.bind(this, i ,j)}
+                  key={j} className={cell.highlight ? 'highlighted-letter' : 'letter'}
+                >{cell.letter}</span>
               })}
             </div>
           )
