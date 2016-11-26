@@ -166,9 +166,9 @@ class WordSearchGrid extends Component {
 
   mouseDown = (i, j, e) => {
     e.preventDefault();
-    this.setState({mouseDown: true})
-      let cell = this.props.wordSearch.grid[i][j];
-      console.log(cell)
+    this.setState({mouseDown: true}, () => {
+      this.mouseEnter(i, j);
+    });
   }
 
   mouseUp = (e) => {
@@ -178,7 +178,6 @@ class WordSearchGrid extends Component {
 
   mouseEnter(i, j, e) {
     if (this.state.mouseDown) {
-      // console.log(`${i} ${j}`);
       let cell = this.props.wordSearch.grid[i][j];
       console.log(cell)
     }
