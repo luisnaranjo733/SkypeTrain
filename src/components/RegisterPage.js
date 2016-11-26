@@ -20,7 +20,7 @@ export default class RegisterPage extends Component {
   componentDidMount() {
     this.participantsRef = firebase.database().ref('participants');
     this.participantsRef.on('value', (snapshot) => {
-      console.log(snapshot.val());
+      // console.log(snapshot.val());
     });
   }
 

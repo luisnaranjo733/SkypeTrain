@@ -20,7 +20,7 @@ export default class AdminPage extends Component {
     });
 
     this.settingsRef.on('value', (snapshot) => {
-      console.log(snapshot.val());
+      // console.log(snapshot.val());
     });
   }
 

@@ -157,7 +157,8 @@ class WordSearchGrid extends Component {
     super(props);
     this.state = {
       mouseDown: false,
-      selectedLetters: []
+      selectedLetters: [],
+      solvedLetters: []
     };
   }
 
@@ -179,7 +180,17 @@ class WordSearchGrid extends Component {
     // unhighlight letters in queue
     this.state.selectedLetters.forEach((cell) => {
       this.props.toggleCellHighlighting(cell.i, cell.j);
-    })
+    });
+
+    if(this.props.checkAnswer(this.state.selectedLetters)) {
+      // selected region is a word`
+      this.setState({
+        solvedLetters: this.state.selectedLetters
+      })
+    } else {
+      // selected region is not a word
+    }
+
     // reset queue in state
     this.setState({
       selectedLetters: []
@@ -190,7 +201,6 @@ class WordSearchGrid extends Component {
     if (this.state.mouseDown) {
       // select letter
       let cell = this.props.wordSearch.grid[i][j];
-      console.log(cell)
 
       // if combined queue in state is a valid answer:
       //    highlight
@@ -278,12 +288,21 @@ class WordSearch extends Component {
     this.setState({wordSearch: newWordSearch});
   }
 
+  // take in array of cells (in order of selection)
+  // and check if they are an actual answer in the solved grid
+  checkAnswer = (selectedRegion) => {
+    console.log(selectedRegion);
+    return false;
+  }
+
   render() {
     return (
       <Grid>
         <Row className="show-grid">
           <Col xs={12} md={8}>
-            <WordSearchGrid wordSearch={this.state.wordSearch} toggleCellHighlighting={this.toggleCellHighlighting}/>
+            <WordSearchGrid wordSearch={this.state.wordSearch} toggleCellHighlighting={this.toggleCellHighlighting}
+              checkAnswer={this.checkAnswer}
+            />
           </Col>
           <Col xs={6} md={4}>
             <WordSearchWords words={this.props.words.filter((word) => {
