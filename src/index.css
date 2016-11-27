@@ -67,36 +67,6 @@ body {
   height: 70vh;
 }
 
-.chatBoxHidden {
-  display: block;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 90vw;
-
-  /*height:*/
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 0;
-  background-color: #EEEEEE;
-}
-
-.chatBoxVisible {
-  display: block;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 90vw;
-
-  height: 90vh;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 0;
-  background-color: #EEEEEE;
-}
-
 .message-item {
   color: #212121;
 }
@@ -104,3 +74,4 @@ body {
 .chatBoxTitle {
   cursor: pointer;
 }
+

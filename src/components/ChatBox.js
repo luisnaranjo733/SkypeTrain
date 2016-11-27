@@ -11,6 +11,33 @@ import Divider from 'material-ui/Divider';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 
+const CHAT_WINDOW_HEIGHT = '90vh'
+
+let style = {
+  chatBox: {
+    display: 'block',
+    position: 'fixed',
+    bottom: '0',
+    left: '0',
+    right: '0',
+    width: '90vw',
+    
+    height: '',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    paddingTop: '0',
+
+    backgroundColor: '#EEEEEE',
+  },
+  title: {
+    cursor: 'pointer',
+  },
+  listItem: {
+    color: '#212121',
+  },
+};
+
+
 export default class ChatBox extends Component {
   constructor(props) {
     super(props);
@@ -31,18 +58,26 @@ export default class ChatBox extends Component {
 
   }
 
-  getChatBoxStyle = () => {
-    return this.props.isChatBoxOpen ? 'chatBoxVisible' : 'chatBoxHidden';
-  }  
+  toggleChatBox = () => {
+    if (this.props.isChatBoxOpen) {
+      style.chatBox.height = '';
+    } else {
+      style.chatBox.height = CHAT_WINDOW_HEIGHT;
+    }
+    this.props.toggleChatBoxOpen();
+  }
+  
 
   render() {
+    
+
     var messages = this.state.messages.map((message, i) => {
       // if there is a sender defined, else the user is sending
       if (message.sender) {
         return (
           <span key={i}>
             <ListItem
-              primaryText={message.message} className='message-item'
+              primaryText={message.message} style={style.listItem}
               leftAvatar={<Avatar src={message.icon} />}
             />
             <Divider />
@@ -52,7 +87,7 @@ export default class ChatBox extends Component {
         return (
           <span key={i}>
             <ListItem
-              primaryText={message.message} className='message-item'
+              primaryText={message.message} style={style.listItem}
               rightAvatar={<Avatar src={message.icon} />}
             />
             <Divider />
@@ -62,27 +97,26 @@ export default class ChatBox extends Component {
 
     });
 
-    let chatBoxStyle = this.getChatBoxStyle();
-    console.log(`Style: ${chatBoxStyle}`);
-
     return (
-      <List className={this.getChatBoxStyle}>
+      <List style={style.chatBox}>
         {
           this.props.isChatBoxOpen ? 
             <AppBar
-              title={<span className='chatBoxTitle'>Chat</span>}
+              style={style.chatBoxHeader}
+              title={<span style={style.title}>Chat</span>}
               showMenuIconButton={false}
               iconElementRight={<IconButton><NavigationClose /></IconButton>}
-              onRightIconButtonTouchTap={this.props.toggleChatBoxOpen}
-              onTitleTouchTap={this.props.toggleChatBoxOpen}
+              onRightIconButtonTouchTap={this.toggleChatBox}
+              onTitleTouchTap={this.toggleChatBox}
             />
           :
             <AppBar
+              style={style.chatBoxHeader}
               title={
-                <span className='chatBoxTitle'>Chat (4)</span>
+                <span style={style.title}>Chat (4)</span>
               }
               showMenuIconButton={false}
-              onTitleTouchTap={this.props.toggleChatBoxOpen}
+              onTitleTouchTap={this.toggleChatBox}
               iconElementRight={
                 <IconButton tooltip="Notifications">
                   <NotificationsIcon />
