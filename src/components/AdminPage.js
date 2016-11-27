@@ -19,41 +19,10 @@ export default class AdminPage extends Component {
   constructor(props, context) {
     super(props);
     this.context = context;
-
-    this.state = {
-      showAnswerKey: null,
-      labVariant: null,
-      settingsLoaded: false,
-    };
-
-    this.settingsRef = firebase.database().ref('settings');
-  }
-
-  componentDidMount() {
-    this.settingsRef.on('value', (snapshot) => {
-      this.setState({
-        showAnswerKey: snapshot.val().showAnswerKey,
-        labVariant: snapshot.val().labVariant,
-        settingsLoaded: true
-      }, () => console.log(this.state));
-    });
-  }
-
-  componentWillUnmount() {
-    //unregister listeners
-    firebase.database().ref('settings').off();
-  }
-
-  onToggleAnswerKey = () => {
-    console.log('toggle answer key');
-    this.settingsRef.child('showAnswerKey').set(!this.state.showAnswerKey);
-    this.setState({showAnswerKey: !this.state.showAnswerKey});
   }
 
   changeLabVariant = (event, value) => {
-
-    this.settingsRef.child('labVariant').set(value);
-    this.setState({labVariant: value});
+    this.props.setLabVariant(value);
   }
 
   render() {
@@ -68,20 +37,18 @@ export default class AdminPage extends Component {
     }
 
     let radioButtons;
-    if (this.state.settingsLoaded) {
+    if (this.props.state.settingsLoaded) {
       radioButtons = (
-        <RadioButtonGroup name="labVariant" defaultSelected={this.state.labVariant} onChange={this.changeLabVariant}>
+        <RadioButtonGroup name="labVariant" defaultSelected={this.props.state.labVariant} onChange={this.changeLabVariant}>
           <RadioButton
             value="v1"
             label="Variant 1"
             style={styles.radioButton}
-            disabled={!this.state.settingsLoaded}
           />
           <RadioButton
             value="v2"
             label="Variant 2"
             style={styles.radioButton}
-            disabled={!this.state.settingsLoaded}
           />
         </RadioButtonGroup>
       )
@@ -101,11 +68,11 @@ export default class AdminPage extends Component {
           <br/><br/>
 
           <div style={styles.block}>
-            <Toggle disabled={!this.state.settingsLoaded}
-              onToggle={this.onToggleAnswerKey} style={styles.toggle} label="Show word search answers" defaultToggled={this.state.showAnswerKey} />
+            <Toggle disabled={!this.props.state.settingsLoaded}
+              onToggle={this.props.toggleAnswerKey} style={styles.toggle} label="Show word search answers" defaultToggled={this.props.state.showAnswerKey} />
           </div>
 
-          <p>Variant: {this.state.labVariant}</p>
+          <p>Variant: {this.props.state.labVariant}</p>
           {radioButtons}
 
 
