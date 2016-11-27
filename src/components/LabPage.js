@@ -157,8 +157,7 @@ class WordSearchGrid extends Component {
     super(props);
     this.state = {
       mouseDown: false,
-      selectedLetters: [],
-      solvedLetters: []
+      selectedLetters: []
     };
   }
 
@@ -183,13 +182,11 @@ class WordSearchGrid extends Component {
     });
 
     if(this.props.checkAnswer(this.state.selectedLetters)) {
-      console.log(this.state.selectedLetters.map((cell) => {
+      let word = this.state.selectedLetters.map((cell) => {
         return cell.letter
-      }).join(''));
+      }).join('');
       // selected region is a word`
-      this.setState({
-        solvedLetters: this.state.selectedLetters
-      })
+      this.props.addSolvedWord(word)
     } else {
       // selected region is not a word
     }
@@ -298,6 +295,27 @@ class WordSearch extends Component {
     this.toggleCellHighlighting = this.toggleCellHighlighting.bind(this);
   }
 
+  reverseString(s){
+    return s.split("").reverse().join("");
+  }
+
+  addSolvedWord = (word) => {
+    console.log(`add "${word}" to solved words list`);
+    let solvedWords = _.concat(this.state.words);
+    solvedWords.forEach((solvedWord, i) => {
+      if (solvedWord.word === word) {
+        console.log('match!')
+        solvedWord.solved = true;
+      }
+      word = this.reverseString(word);
+      if (solvedWord.word === word) {
+        console.log('match')
+        solvedWord.solved = true;
+      }
+    });
+    this.setState({words: solvedWords});
+  }
+
   toggleCellHighlighting(i, j) {
     var newWordSearch = Object.assign({}, this.state.wordSearch);
     newWordSearch.grid[i][j].highlight = !newWordSearch.grid[i][j].highlight;
@@ -324,7 +342,7 @@ class WordSearch extends Component {
         <Row className="show-grid">
           <Col xs={12} md={8}>
             <WordSearchGrid wordSearch={this.state.wordSearch} toggleCellHighlighting={this.toggleCellHighlighting}
-              checkAnswer={this.checkAnswer}
+              checkAnswer={this.checkAnswer} addSolvedWord={this.addSolvedWord}
             />
           </Col>
           <Col xs={6} md={4}>

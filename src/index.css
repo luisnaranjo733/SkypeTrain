@@ -51,6 +51,7 @@ body {
 
 .solved-word {
   text-decoration: line-through;
+  color: red;
 }
 
 .unsolved-word {
