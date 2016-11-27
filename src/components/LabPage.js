@@ -174,21 +174,24 @@ class WordSearchGrid extends Component {
 
   mouseUp = (e) => {
     e.preventDefault();
-    this.setState({mouseDown: false})
-
-    // unhighlight letters in queue
-    this.state.selectedLetters.forEach((cell) => {
-      this.props.toggleCellHighlighting(cell.i, cell.j);
-    });
+    this.setState({mouseDown: false});
 
     if(this.props.checkAnswer(this.state.selectedLetters)) {
       let word = this.state.selectedLetters.map((cell) => {
         return cell.letter
       }).join('');
-      // selected region is a word`
-      this.props.addSolvedWord(word)
+      
+      // update word list
+      this.props.addSolvedWord(word);
+      this.state.selectedLetters.forEach((cell) => {
+        this.props.solveCell(cell);
+      });
     } else {
       // selected region is not a word
+      // unhighlight letters in queue
+      this.state.selectedLetters.forEach((cell) => {
+        this.props.toggleCellHighlighting(cell.i, cell.j);
+      });
     }
 
     // reset queue in state
@@ -213,14 +216,15 @@ class WordSearchGrid extends Component {
   }
 
   getCellClass = (cell) => {
-    let className = 'letter';
+    if (cell.solved || cell.highlight) {
+      return 'highlighted-letter';
+    }
     let solutionCell = this.props.wordSearch.solved[cell.i][cell.j];
     if (solutionCell.trim()) {
-      className = 'solved-letter';
-    }if (cell.highlight) {
-      className = ' highlighted-letter';
+      return 'solved-letter';
+    } else {
+      return 'letter';
     }
-    return className;
   }
 
   render() {
@@ -269,13 +273,13 @@ class WordSearch extends Component {
   constructor(props) {
     super(props);
     let wordSearch = wordsearch(this.props.wordList, this.props.width, this.props.height);
-    console.log(wordSearch);
 
     for (let i=0; i < wordSearch.grid.length; i++) {
       for(let j=0; j < wordSearch.grid[i].length; j++) {
         wordSearch.grid[i][j] = {
           letter: wordSearch.grid[i][j],
           highlight: false,
+          solved: false,
           i: i,
           j: j
         }
@@ -300,20 +304,25 @@ class WordSearch extends Component {
   }
 
   addSolvedWord = (word) => {
-    console.log(`add "${word}" to solved words list`);
     let solvedWords = _.concat(this.state.words);
-    solvedWords.forEach((solvedWord, i) => {
+    solvedWords.map((solvedWord, i) => {
       if (solvedWord.word === word) {
-        console.log('match!')
         solvedWord.solved = true;
       }
       word = this.reverseString(word);
       if (solvedWord.word === word) {
-        console.log('match')
         solvedWord.solved = true;
       }
+      return solvedWord;
     });
     this.setState({words: solvedWords});
+  }
+
+  solveCell = (cell) => {
+    let newWordSearch = Object.assign({}, this.state.wordSearch);
+    newWordSearch.grid[cell.i][cell.j].solved=true;
+    this.setState({WordSearch: newWordSearch});
+
   }
 
   toggleCellHighlighting(i, j) {
@@ -342,7 +351,7 @@ class WordSearch extends Component {
         <Row className="show-grid">
           <Col xs={12} md={8}>
             <WordSearchGrid wordSearch={this.state.wordSearch} toggleCellHighlighting={this.toggleCellHighlighting}
-              checkAnswer={this.checkAnswer} addSolvedWord={this.addSolvedWord}
+              checkAnswer={this.checkAnswer} addSolvedWord={this.addSolvedWord} solveCell={this.solveCell}
             />
           </Col>
           <Col xs={6} md={4}>
