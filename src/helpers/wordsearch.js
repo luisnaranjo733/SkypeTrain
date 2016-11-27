@@ -117,6 +117,7 @@
       } // end placement while loop
 
       if (attempts >= 20) unplaced.push(originalword);
+      if (info.direction === 0 || info.direction === 2) unplaced.push(originalword);
       colorno = (colorno + 1) % 6;
     } // end word loop
 

@@ -208,7 +208,7 @@ class WordSearchGrid extends Component {
       // else mark letter
       this.props.toggleCellHighlighting(i, j);
 
-      // add letter to queue in state
+      // add letter to queue in states
       this.setState({
         selectedLetters: _.concat(this.state.selectedLetters, cell)
       });
@@ -216,7 +216,6 @@ class WordSearchGrid extends Component {
   }
 
   getCellClass = (cell) => {
-    console.log(`"${this.props.wordSearch.solved[cell.i][cell.j]}"`)
     let solutionCell = this.props.wordSearch.solved[cell.i][cell.j];
     if (solutionCell.trim()) {
       return 'highlighted-letter'
