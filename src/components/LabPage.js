@@ -36,8 +36,6 @@ export default class LabPage extends Component {
   }
 
   render() {
-    console.log('lab')
-    console.log(this.props.state.labVariant)
     return (
 
         <div>       

@@ -4,16 +4,6 @@ import {Card, CardTitle, CardText} from 'material-ui/Card';
 import Toggle from 'material-ui/Toggle';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
-import firebase from 'firebase';
-
-const styles = {
-  block: {
-    maxWidth: 250,
-  },
-  radioButton: {
-    marginBottom: 16,
-  },
-};
 
 export default class AdminPage extends Component {
   constructor(props, context) {

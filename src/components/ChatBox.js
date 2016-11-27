@@ -59,10 +59,10 @@ export default class ChatBox extends Component {
 
   componentDidMount() {
     this.participantsRef = firebase.database().ref('participants');
-    console.log('last participant')
+    
     this.participantsRef.limitToLast(1).on('child_added', (snapshot) => {
+      console.log('last participant')
       console.log(snapshot.val());
-      console.log(snapshot.val().name);
     });
   }
 

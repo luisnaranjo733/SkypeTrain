@@ -2,18 +2,9 @@ import React, { Component } from 'react';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
-import TextField from 'material-ui/TextField';
+import TextField from 'material-ui/TextField';  
 
 import firebase from 'firebase';
-
-const styles = {
-  block: {
-    maxWidth: 250,
-  },
-  radioButton: {
-    marginBottom: 16,
-  },
-};
 
 export default class RegisterPage extends Component {
   constructor(props, context) {
