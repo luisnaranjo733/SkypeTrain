@@ -291,7 +291,23 @@ class WordSearch extends Component {
   // take in array of cells (in order of selection)
   // and check if they are an actual answer in the solved grid
   checkAnswer = (selectedRegion) => {
-    console.log(selectedRegion);
+    let directionA = selectedRegion.reduce((word, cell) => {
+      return word + cell.letter
+    }, '');
+
+    if (_.includes(this.props.words, directionA)) {
+      console.log(directionA)
+    }
+
+    selectedRegion.reverse();
+
+    let directionB = selectedRegion.reduce((word, cell) => {
+      return word + cell.letter
+    }, '');
+
+    if(_.includes(this.props.words, directionB)) {
+      console.log(directionB)
+    }
     return false;
   }
 
