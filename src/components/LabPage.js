@@ -14,7 +14,7 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
-import wordsearch from 'wordsearch';
+import wordsearch from '../helpers/wordsearch';
 
 const CHAT_WINDOW_HEIGHT = '90vh'
 
