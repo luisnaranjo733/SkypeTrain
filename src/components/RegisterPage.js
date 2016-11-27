@@ -40,8 +40,12 @@ export default class RegisterPage extends Component {
     if (this.state.formValid) {
       this.participantsRef.push({
         name: this.state.participantName,
-        labStartTime: firebase.database.ServerValue.TIMESTAMP,
-        chatHistory: ['hey'],
+        events: [
+          {
+            eventName: 'start task',
+            timestamp: firebase.database.ServerValue.TIMESTAMP // time since the Unix epoch, in milliseconds
+          }
+        ],
       });
       this.context.router.push('/lab');
     }

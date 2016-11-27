@@ -36,9 +36,10 @@ export default class LabPage extends Component {
   }
 
   render() {
+
     return (
 
-        <div>       
+        <div>      
           {this.state.wordSearchParams ? 
             <WordSearch labVariant={this.props.state.labVariant} showAnswerKey={this.state.showAnswerKey} wordList={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height} width={this.state.wordSearchParams.width}/>
             : <p>Loading</p>
