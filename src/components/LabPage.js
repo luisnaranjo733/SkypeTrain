@@ -36,11 +36,13 @@ export default class LabPage extends Component {
   }
 
   render() {
+    console.log('lab')
+    console.log(this.props.state.labVariant)
     return (
 
         <div>       
           {this.state.wordSearchParams ? 
-            <WordSearch showAnswerKey={this.state.showAnswerKey} wordList={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height} width={this.state.wordSearchParams.width}/>
+            <WordSearch labVariant={this.props.state.labVariant} showAnswerKey={this.state.showAnswerKey} wordList={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height} width={this.state.wordSearchParams.width}/>
             : <p>Loading</p>
           }
           <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
