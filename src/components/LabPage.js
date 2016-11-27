@@ -220,7 +220,7 @@ class WordSearchGrid extends Component {
       return 'highlighted-letter';
     }
     let solutionCell = this.props.wordSearch.solved[cell.i][cell.j];
-    if (solutionCell.trim()) {
+    if (solutionCell.trim() && this.props.showAnswerKey) {
       return 'solved-letter';
     } else {
       return 'letter';
@@ -352,6 +352,7 @@ class WordSearch extends Component {
           <Col xs={12} md={8}>
             <WordSearchGrid wordSearch={this.state.wordSearch} toggleCellHighlighting={this.toggleCellHighlighting}
               checkAnswer={this.checkAnswer} addSolvedWord={this.addSolvedWord} solveCell={this.solveCell}
+              showAnswerKey={this.props.showAnswerKey}
             />
           </Col>
           <Col xs={6} md={4}>
@@ -378,21 +379,13 @@ export default class LabPage extends Component {
   toggleChatBoxOpen = () => this.setState({isChatBoxOpen: !this.state.isChatBoxOpen})
 
   componentDidMount() {
-    firebase.database().ref('wordSearch').set({
-      words: ['christmas', 'cookies', 'gingerbread', 'tree', 'bells', 
-        'snowman', 'santa', 'star', 'ornament', 'reindeer', 'stockings',
-        'rudolph', 'dasher', 'dancer', 'prancer', 'vixen', 'comet',
-        'cupid', 'donner', 'blitzen', 'carols', 'december', 'family',
-        'mistletoe', 'snowflake', 'eggnog', 'holiday', 'decorations',
-        'holly', 'chimney', 'wreath', 'merry', 'candycane', 'lights',
-        'elf', 'peace'
-      ],
-      height: 25,
-      width: 25
-    })
     firebase.database().ref('wordSearch').on('value', (snapshot) => {
       this.setState({wordSearchParams: snapshot.val()});
     });
+
+    firebase.database().ref('settings/showAnswerKey').on('value', (snapshot) => {
+      this.setState({showAnswerKey: snapshot.val()})
+    })
   }
 
   componentWillUnmount() {
@@ -405,7 +398,7 @@ export default class LabPage extends Component {
 
         <div>       
           {this.state.wordSearchParams ? 
-            <WordSearch wordList={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height} width={this.state.wordSearchParams.width}/>
+            <WordSearch showAnswerKey={this.state.showAnswerKey} wordList={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height} width={this.state.wordSearchParams.width}/>
             : <p>Loading</p>
           }
           <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
