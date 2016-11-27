@@ -18,23 +18,6 @@ import wordsearch from '../helpers/wordsearch';
 
 const CHAT_WINDOW_HEIGHT = '90vh'
 
-let style = {
-  chatBox: {
-    display: 'block',
-    position: 'fixed',
-    bottom: '0',
-    left: '0',
-    right: '0',
-    width: '90vw',
-    
-    height: '',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    paddingTop: '0',
-
-    backgroundColor: '#EEEEEE',
-  },
-};
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -60,34 +43,18 @@ class ChatBox extends Component {
 
   }
 
-  toggleChatBox = () => {
-    if (this.props.isChatBoxOpen) {
-      style.chatBox.height = '';
-    } else {
-      style.chatBox.height = CHAT_WINDOW_HEIGHT;
-    }
-    this.props.toggleChatBoxOpen();
-  }
-  
+  getChatBoxStyle = () => {
+    return this.props.isChatBoxOpen ? 'chatBoxVisible' : 'chatBoxHidden';
+  }  
 
   render() {
-      let styles = {
-        title: {
-          cursor: 'pointer',
-        },
-        listItem: {
-          color: '#212121',
-        },
-      }
-
-
     var messages = this.state.messages.map((message, i) => {
       // if there is a sender defined, else the user is sending
       if (message.sender) {
         return (
           <span key={i}>
             <ListItem
-              primaryText={message.message} style={styles.listItem}
+              primaryText={message.message} className='message-item'
               leftAvatar={<Avatar src={message.icon} />}
             />
             <Divider />
@@ -97,7 +64,7 @@ class ChatBox extends Component {
         return (
           <span key={i}>
             <ListItem
-              primaryText={message.message} style={styles.listItem}
+              primaryText={message.message} className='message-item'
               rightAvatar={<Avatar src={message.icon} />}
             />
             <Divider />
@@ -107,26 +74,27 @@ class ChatBox extends Component {
 
     });
 
+    let chatBoxStyle = this.getChatBoxStyle();
+    console.log(`Style: ${chatBoxStyle}`);
+
     return (
-      <List style={style.chatBox}>
+      <List className={this.getChatBoxStyle}>
         {
           this.props.isChatBoxOpen ? 
             <AppBar
-              style={style.chatBoxHeader}
-              title={<span style={styles.title}>Chat</span>}
+              title={<span className='chatBoxTitle'>Chat</span>}
               showMenuIconButton={false}
               iconElementRight={<IconButton><NavigationClose /></IconButton>}
-              onRightIconButtonTouchTap={this.toggleChatBox}
-              onTitleTouchTap={this.toggleChatBox}
+              onRightIconButtonTouchTap={this.props.toggleChatBoxOpen}
+              onTitleTouchTap={this.props.toggleChatBoxOpen}
             />
           :
             <AppBar
-              style={style.chatBoxHeader}
               title={
-                <span style={styles.title}>Chat (4)</span>
+                <span className='chatBoxTitle'>Chat (4)</span>
               }
               showMenuIconButton={false}
-              onTitleTouchTap={this.toggleChatBox}
+              onTitleTouchTap={this.props.toggleChatBoxOpen}
               iconElementRight={
                 <IconButton tooltip="Notifications">
                   <NotificationsIcon />
