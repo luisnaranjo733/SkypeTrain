@@ -101,8 +101,13 @@
         // reset x and y and place it
         x = ox;
         y = oy;
+        
         for (var l = 0; l < word.length; l++) {
-          grid[y][x] = word.charAt(l);
+          if (info.direction !== 0 && info.direction !== 2) {
+            console.log(`(${x}, ${y}): ${word} (${info.direction})`);
+            grid[y][x] = word.charAt(l);
+          }
+          
           // if (opts.color) grid[y][x] = '\033[' + (colorno + 41) + 'm' + grid[y][x] + '\033[0m';
 
           y += info.dy;
@@ -147,8 +152,10 @@
     var maxx = width - 1;
     var maxy = height - 1;
     var dx = 0, dy = 0;
+    // console.log(`${direction}: ${word}`);
     switch (direction) {
       case 0: // up-right
+        
         maxy = height - 1;
         miny = word.length - 1;
         dy = -1;
@@ -183,7 +190,8 @@
       minx: minx,
       miny: miny,
       dx: dx,
-      dy: dy
+      dy: dy,
+      direction: direction
     }
   }
 
