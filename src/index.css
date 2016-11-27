@@ -32,7 +32,7 @@ body {
 }
 
 .highlighted-letter {
-  background-color: grey;
+  background-color: #9575CD;
   width: 1.70em;
   height: 1.70em;
   text-align: center;
@@ -41,12 +41,20 @@ body {
 }
 
 .solved-letter {
-  background-color:#9575CD;
+  background-color:grey;
   width: 1.70em;
   height: 1.70em;
   text-align: center;
   line-height: 1.70em;
   font-family: 'Muli', sans-serif;
+}
+
+.solved-word {
+  text-decoration: line-through;
+}
+
+.unsolved-word {
+  
 }
 
 #word-search-words {

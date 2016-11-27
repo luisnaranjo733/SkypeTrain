@@ -202,13 +202,10 @@ class WordSearchGrid extends Component {
       // select letter
       let cell = this.props.wordSearch.grid[i][j];
 
-      // if combined queue in state is a valid answer:
-      //    highlight
-
-      // else mark letter
+      // highlight letter
       this.props.toggleCellHighlighting(i, j);
 
-      // add letter to queue in states
+      // add letter to queue in state
       this.setState({
         selectedLetters: _.concat(this.state.selectedLetters, cell)
       });
@@ -246,13 +243,21 @@ class WordSearchGrid extends Component {
 }
 
 class WordSearchWords extends Component {
+  getClassName = (word) => {
+    if (word.solved) {
+      return 'solved-word';
+    } else {
+      return 'unsolved-word';
+    }
+  }
+  
   render() {
     return (
       <div id="word-search-words">
         <h1>Word search</h1>
         <ul>
           {this.props.words.map((word, i) => {
-            return <li key={i}>{word}</li>
+            return <li key={i} className={this.getClassName(word)}>{word.word}</li>
           })}
         </ul>
       </div>
@@ -263,7 +268,7 @@ class WordSearchWords extends Component {
 class WordSearch extends Component {
   constructor(props) {
     super(props);
-    let wordSearch = wordsearch(this.props.words, this.props.width, this.props.height);
+    let wordSearch = wordsearch(this.props.wordList, this.props.width, this.props.height);
     console.log(wordSearch);
 
     for (let i=0; i < wordSearch.grid.length; i++) {
@@ -279,7 +284,13 @@ class WordSearch extends Component {
 
 
     this.state = {
-      wordSearch: wordSearch
+      wordSearch: wordSearch,
+      words: this.props.wordList.map((word) => {
+        return {
+          word: word,
+          solved: false
+        }
+      })
     }
     this.toggleCellHighlighting = this.toggleCellHighlighting.bind(this);
   }
@@ -296,29 +307,15 @@ class WordSearch extends Component {
     let directionA = selectedRegion.reduce((word, cell) => {
       return word + cell.letter
     }, '');
-
-    if (_.includes(this.props.words, directionA)) {
-      console.log(directionA)
-    }
-
     selectedRegion.reverse();
-
     let directionB = selectedRegion.reduce((word, cell) => {
       return word + cell.letter
     }, '');
 
-    if(_.includes(this.props.words, directionB)) {
-      console.log(directionB)
-    }
-    return false;
+    return _.includes(this.props.words, directionA) || _.includes(this.props.words, directionB);
   }
 
   render() {
-    let words = this.props.words.filter((word) => {
-      return !_.includes(this.state.wordSearch.unplaced, word);
-    }).map((word) => {
-      
-    })
     return (
       <Grid>
         <Row className="show-grid">
@@ -328,8 +325,8 @@ class WordSearch extends Component {
             />
           </Col>
           <Col xs={6} md={4}>
-            <WordSearchWords words={this.props.words.filter((word) => {
-              return !_.includes(this.state.wordSearch.unplaced, word);
+            <WordSearchWords words={this.state.words.filter((word) => {
+              return !_.includes(this.state.wordSearch.unplaced, word.word);
             })}/>
           </Col>
         </Row>
@@ -378,7 +375,7 @@ export default class LabPage extends Component {
 
         <div>       
           {this.state.wordSearchParams ? 
-            <WordSearch words={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height} width={this.state.wordSearchParams.width}/>
+            <WordSearch wordList={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height} width={this.state.wordSearchParams.width}/>
             : <p>Loading</p>
           }
           <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
