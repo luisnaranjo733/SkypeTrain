@@ -29,20 +29,20 @@ export default class LabPage extends Component {
       this.setState({wordSearchParams: snapshot.val()});
     });
 
-    // firebase.database().ref('wordSearch2').set({
-    //   height: 10,
-    //   widht: 10,
-    //   words: ['apple', 'cup', 'go', 'dawgs']
-    // })
-
     firebase.database().ref('settings/showAnswerKey').on('value', (snapshot) => {
       this.setState({showAnswerKey: snapshot.val()})
     })
+
+    this.participantsRef = firebase.database().ref('participants');
+    this.participantsRef.limitToLast(1).on('child_added', (snapshot) => {
+      console.log(snapshot.val());
+    });
   }
 
   componentWillUnmount() {
     //unregister listeners
     firebase.database().ref('wordSearch').off();
+    this.participantsRef.off();
   }
 
   render() {

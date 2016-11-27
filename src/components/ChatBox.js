@@ -57,20 +57,6 @@ export default class ChatBox extends Component {
     };
   }
 
-  componentDidMount() {
-    this.participantsRef = firebase.database().ref('participants');
-    
-    this.participantsRef.limitToLast(1).on('child_added', (snapshot) => {
-      console.log('last participant')
-      console.log(snapshot.val());
-    });
-  }
-
-  componentWillUnmount() {
-    //unregister listeners
-    firebase.database().ref('participants').off();
-  }
-
   toggleChatBox = () => {
     if (this.props.isChatBoxOpen) {
       style.chatBox.height = '';
