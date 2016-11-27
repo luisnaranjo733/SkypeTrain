@@ -158,6 +158,7 @@ export default class WordSearch extends Component {
   addSolvedWord = (word) => {
     let solvedWords = _.concat(this.state.words);
     solvedWords.map((solvedWord, i) => {
+      // solvedWord.solved = true; // debugging
       if (solvedWord.word === word) {
         solvedWord.solved = true;
       }
@@ -167,7 +168,17 @@ export default class WordSearch extends Component {
       }
       return solvedWord;
     });
-    this.setState({words: solvedWords});
+    this.setState({words: solvedWords}, () => {
+      let solved = true;
+      this.state.words.forEach((word) => {
+        if (!word.solved && !_.includes(this.state.wordSearch.unplaced, word.word)) {
+          solved = false;
+        }
+      });
+      if (solved) {
+        this.props.onWordSearchComplete();
+      }
+    });
   }
 
   solveCell = (cell) => {
