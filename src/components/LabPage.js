@@ -183,6 +183,9 @@ class WordSearchGrid extends Component {
     });
 
     if(this.props.checkAnswer(this.state.selectedLetters)) {
+      console.log(this.state.selectedLetters.map((cell) => {
+        return cell.letter
+      }).join(''));
       // selected region is a word`
       this.setState({
         solvedLetters: this.state.selectedLetters
@@ -312,7 +315,7 @@ class WordSearch extends Component {
       return word + cell.letter
     }, '');
 
-    return _.includes(this.props.words, directionA) || _.includes(this.props.words, directionB);
+    return _.includes(this.props.wordList, directionA) || _.includes(this.props.wordList, directionB);
   }
 
   render() {
