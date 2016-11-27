@@ -18,10 +18,9 @@ export default class RegisterPage extends Component {
   }
 
   componentDidMount() {
-    this.participantsRef = firebase.database().ref('participants');
-    this.participantsRef.on('value', (snapshot) => {
-      // console.log(snapshot.val());
-    });
+    // firebase.database().ref('participants').on('value', (snapshot) => {
+    //   // console.log(snapshot.val());
+    // });
   }
 
   componentWillUnmount() {
@@ -38,15 +37,16 @@ export default class RegisterPage extends Component {
 
   submitButtonPressed = () => {
     if (this.state.formValid) {
-      this.participantsRef.push({
-        name: this.state.participantName,
-        events: [
-          {
-            eventName: 'start task',
-            timestamp: firebase.database.ServerValue.TIMESTAMP // time since the Unix epoch, in milliseconds
-          }
-        ],
-      });
+      let newParticipantRef = firebase.database().ref('participants').push();
+      newParticipantRef.set({
+        name: this.state.participantName
+      })
+      // firebase.database.ServerValue.TIMESTAMP // time since the Unix epoch, in milliseconds
+      firebase.database().ref('events').push({
+        participantKey: newParticipantRef.key,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        eventName: 'startLab'
+      })
       this.context.router.push('/lab');
     }
   }  
