@@ -216,17 +216,17 @@ class WordSearchGrid extends Component {
   }
 
   getCellClass = (cell) => {
-    if (cell.highlight) {
-      return 'highlighted-letter';
-    } else {
-      return 'letter';
+    console.log(`"${this.props.wordSearch.solved[cell.i][cell.j]}"`)
+    let solutionCell = this.props.wordSearch.solved[cell.i][cell.j];
+    if (solutionCell.trim()) {
+      return 'highlighted-letter'
     }
+    return 'letter'
   }
 
   render() {
     return (
       <div id="grid"  onMouseUp={this.mouseUp}>
-        {this.state.mouseDown ? <p>Mouse down</p> : <p>Mouse up</p>}
         {this.props.wordSearch.grid.map((row, i) => {
           return (
             <div key={i} className="row">

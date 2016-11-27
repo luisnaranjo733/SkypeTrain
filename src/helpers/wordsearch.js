@@ -104,7 +104,7 @@
         
         for (var l = 0; l < word.length; l++) {
           if (info.direction !== 0 && info.direction !== 2) {
-            console.log(`(${x}, ${y}): ${word} (${info.direction})`);
+            // console.log(`(${x}, ${y}): ${word} (${info.direction})`);
             grid[y][x] = word.charAt(l);
           }
           
