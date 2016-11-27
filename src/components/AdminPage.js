@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Card, CardTitle, CardText} from 'material-ui/Card';
+import Toggle from 'material-ui/Toggle';
 import firebase from 'firebase';
 
 export default class AdminPage extends Component {
@@ -8,19 +9,20 @@ export default class AdminPage extends Component {
     this.context = context;
 
     this.state = {
-
+      showAnswerKey: null,
+      settingsLoaded: false,
     };
 
     this.settingsRef = firebase.database().ref('settings');
   }
 
   componentDidMount() {
-    this.settingsRef.child('chatEvents').push({
-        event: true
-    });
-
-    this.settingsRef.on('value', (snapshot) => {
-      // console.log(snapshot.val());
+    // this.settingsRef.child('showAnswerKey').set(true);
+    this.settingsRef.child('showAnswerKey').on('value', (snapshot) => {
+      this.setState({
+        showAnswerKey: snapshot.val(),
+        settingsLoaded: true
+      });
     });
   }
 
@@ -29,7 +31,22 @@ export default class AdminPage extends Component {
     firebase.database().ref('settings').off();
   }
 
+  onToggleAnswerKey = () => {
+    console.log('toggle answer key');
+    this.settingsRef.child('showAnswerKey').set(!this.state.showAnswerKey);
+    this.setState({showAnswerKey: !this.state.showAnswerKey});
+  }
+
   render() {
+
+    const styles = {
+      block: {
+        maxWidth: 250,
+      },
+      toggle: {
+        marginBottom: 16,
+      },
+    }
     return (
       <div>
         <Card>
@@ -41,8 +58,12 @@ export default class AdminPage extends Component {
             Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
           </CardText>
 
-
           <br/><br/>
+
+          <div style={styles.block}>
+          <Toggle disabled={!this.state.settingsLoaded}
+            onToggle={this.onToggleAnswerKey} style={styles.toggle} label="Show word search answers" defaultToggled={this.state.showAnswerKey} />
+          </div>
         </Card>
       </div>
     );
