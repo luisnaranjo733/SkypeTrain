@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-// import './App.css';
+import firebase from 'firebase';
 import _ from 'lodash';
 
 import IconButton from 'material-ui/IconButton';
@@ -55,7 +55,20 @@ export default class ChatBox extends Component {
         }
       ]
     };
+  }
 
+  componentDidMount() {
+    this.participantsRef = firebase.database().ref('participants');
+    console.log('last participant')
+    this.participantsRef.limitToLast(1).on('child_added', (snapshot) => {
+      console.log(snapshot.val());
+      console.log(snapshot.val().name);
+    });
+  }
+
+  componentWillUnmount() {
+    //unregister listeners
+    firebase.database().ref('participants').off();
   }
 
   toggleChatBox = () => {
