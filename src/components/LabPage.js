@@ -19,13 +19,6 @@ import wordsearch from '../helpers/wordsearch';
 const CHAT_WINDOW_HEIGHT = '90vh'
 
 let style = {
-  paper: {
-    height: '60vh',
-    width: '100vw',
-    textAlign: 'center',
-    display: 'block',
-  },
-
   chatBox: {
     display: 'block',
     position: 'fixed',
@@ -40,16 +33,6 @@ let style = {
     paddingTop: '0',
 
     backgroundColor: '#EEEEEE',
-  },
-
-  chatBoxHeader: {
-
-  },
-  title: {
-    cursor: 'pointer',
-  },
-  listItem: {
-    color: '#212121',
   },
 };
 
@@ -88,7 +71,15 @@ class ChatBox extends Component {
   
 
   render() {
-    
+      let styles = {
+        title: {
+          cursor: 'pointer',
+        },
+        listItem: {
+          color: '#212121',
+        },
+      }
+
 
     var messages = this.state.messages.map((message, i) => {
       // if there is a sender defined, else the user is sending
@@ -96,7 +87,7 @@ class ChatBox extends Component {
         return (
           <span key={i}>
             <ListItem
-              primaryText={message.message} style={style.listItem}
+              primaryText={message.message} style={styles.listItem}
               leftAvatar={<Avatar src={message.icon} />}
             />
             <Divider />
@@ -106,7 +97,7 @@ class ChatBox extends Component {
         return (
           <span key={i}>
             <ListItem
-              primaryText={message.message} style={style.listItem}
+              primaryText={message.message} style={styles.listItem}
               rightAvatar={<Avatar src={message.icon} />}
             />
             <Divider />
@@ -122,7 +113,7 @@ class ChatBox extends Component {
           this.props.isChatBoxOpen ? 
             <AppBar
               style={style.chatBoxHeader}
-              title={<span style={style.title}>Chat</span>}
+              title={<span style={styles.title}>Chat</span>}
               showMenuIconButton={false}
               iconElementRight={<IconButton><NavigationClose /></IconButton>}
               onRightIconButtonTouchTap={this.toggleChatBox}
@@ -132,7 +123,7 @@ class ChatBox extends Component {
             <AppBar
               style={style.chatBoxHeader}
               title={
-                <span style={style.title}>Chat (4)</span>
+                <span style={styles.title}>Chat (4)</span>
               }
               showMenuIconButton={false}
               onTitleTouchTap={this.toggleChatBox}
