@@ -216,11 +216,14 @@ class WordSearchGrid extends Component {
   }
 
   getCellClass = (cell) => {
+    let className = 'letter';
     let solutionCell = this.props.wordSearch.solved[cell.i][cell.j];
     if (solutionCell.trim()) {
-      return 'highlighted-letter'
+      className = 'solved-letter';
+    }if (cell.highlight) {
+      className = ' highlighted-letter';
     }
-    return 'letter'
+    return className;
   }
 
   render() {
@@ -311,6 +314,11 @@ class WordSearch extends Component {
   }
 
   render() {
+    let words = this.props.words.filter((word) => {
+      return !_.includes(this.state.wordSearch.unplaced, word);
+    }).map((word) => {
+      
+    })
     return (
       <Grid>
         <Row className="show-grid">

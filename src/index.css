@@ -40,6 +40,15 @@ body {
   font-family: 'Muli', sans-serif;
 }
 
+.solved-letter {
+  background-color:#9575CD;
+  width: 1.70em;
+  height: 1.70em;
+  text-align: center;
+  line-height: 1.70em;
+  font-family: 'Muli', sans-serif;
+}
+
 #word-search-words {
   padding-left: 5em;
 }
