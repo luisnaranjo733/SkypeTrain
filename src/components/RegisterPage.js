@@ -6,6 +6,15 @@ import TextField from 'material-ui/TextField';
 
 import firebase from 'firebase';
 
+const styles = {
+  block: {
+    maxWidth: 250,
+  },
+  radioButton: {
+    marginBottom: 16,
+  },
+};
+
 export default class RegisterPage extends Component {
   constructor(props, context) {
     super(props, context);

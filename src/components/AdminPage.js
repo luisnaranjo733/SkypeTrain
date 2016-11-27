@@ -1,7 +1,19 @@
 import React, { Component } from 'react';
+
 import {Card, CardTitle, CardText} from 'material-ui/Card';
 import Toggle from 'material-ui/Toggle';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+
 import firebase from 'firebase';
+
+const styles = {
+  block: {
+    maxWidth: 250,
+  },
+  radioButton: {
+    marginBottom: 16,
+  },
+};
 
 export default class AdminPage extends Component {
   constructor(props, context) {
@@ -10,6 +22,7 @@ export default class AdminPage extends Component {
 
     this.state = {
       showAnswerKey: null,
+      labVariant: null,
       settingsLoaded: false,
     };
 
@@ -17,12 +30,12 @@ export default class AdminPage extends Component {
   }
 
   componentDidMount() {
-    // this.settingsRef.child('showAnswerKey').set(true);
-    this.settingsRef.child('showAnswerKey').on('value', (snapshot) => {
+    this.settingsRef.on('value', (snapshot) => {
       this.setState({
-        showAnswerKey: snapshot.val(),
+        showAnswerKey: snapshot.val().showAnswerKey,
+        labVariant: snapshot.val().labVariant,
         settingsLoaded: true
-      });
+      }, () => console.log(this.state));
     });
   }
 
@@ -37,6 +50,12 @@ export default class AdminPage extends Component {
     this.setState({showAnswerKey: !this.state.showAnswerKey});
   }
 
+  changeLabVariant = (event, value) => {
+
+    this.settingsRef.child('labVariant').set(value);
+    this.setState({labVariant: value});
+  }
+
   render() {
 
     const styles = {
@@ -47,6 +66,27 @@ export default class AdminPage extends Component {
         marginBottom: 16,
       },
     }
+
+    let radioButtons;
+    if (this.state.settingsLoaded) {
+      radioButtons = (
+        <RadioButtonGroup name="labVariant" defaultSelected={this.state.labVariant} onChange={this.changeLabVariant}>
+          <RadioButton
+            value="v1"
+            label="Variant 1"
+            style={styles.radioButton}
+            disabled={!this.state.settingsLoaded}
+          />
+          <RadioButton
+            value="v2"
+            label="Variant 2"
+            style={styles.radioButton}
+            disabled={!this.state.settingsLoaded}
+          />
+        </RadioButtonGroup>
+      )
+    }
+
     return (
       <div>
         <Card>
@@ -61,9 +101,14 @@ export default class AdminPage extends Component {
           <br/><br/>
 
           <div style={styles.block}>
-          <Toggle disabled={!this.state.settingsLoaded}
-            onToggle={this.onToggleAnswerKey} style={styles.toggle} label="Show word search answers" defaultToggled={this.state.showAnswerKey} />
+            <Toggle disabled={!this.state.settingsLoaded}
+              onToggle={this.onToggleAnswerKey} style={styles.toggle} label="Show word search answers" defaultToggled={this.state.showAnswerKey} />
           </div>
+
+          <p>Variant: {this.state.labVariant}</p>
+          {radioButtons}
+
+
         </Card>
       </div>
     );
