@@ -59,7 +59,6 @@ export class AdminPage extends Component {
   }
 
   updateEventState = () => {
-    console.log(`Fetch state for ${this.state.selectedParticipant}`);
     firebase.database().ref('events').once('value', (snapshot) => {
       let events = [];
       snapshot.forEach((event) => {
@@ -68,8 +67,6 @@ export class AdminPage extends Component {
         }
       });
       this.setState({events: events});
-      console.log('EVENTS');
-      console.log(events);
     });
 
   }
