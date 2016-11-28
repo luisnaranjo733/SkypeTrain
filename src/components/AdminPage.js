@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import firebase from 'firebase';
 
 import {Card, CardTitle, CardText} from 'material-ui/Card';
@@ -13,14 +14,8 @@ export class AdminPage extends Component {
     super(props);
     this.context = context;
     this.state = {
-      events: [
-        {
-          eventName: 'startLab',
-          participantKey: '',
-          timestamp: 'time'
-        }
-      ],
-      selectedParticipant: 1
+      events: [],
+      selectedParticipant: null
     };
 
   }
@@ -30,9 +25,6 @@ export class AdminPage extends Component {
   }
 
   componentDidMount() {
-    firebase.database().ref('events').on('child_added', (snapshot) => {
-      console.log(snapshot.val())
-    });
   }
 
   componentWillUnmount() {
@@ -41,11 +33,22 @@ export class AdminPage extends Component {
   }
 
   handleSelectChange = (event, index, value) => {
-    console.log(`Event: ${event}`);
-    console.log(event.target);
-    console.log(`Index: ${index}`);
-    console.log(`Value: ${value}`);
-    this.setState({selectedParticipant: value})
+    console.log(value);
+    this.setState({
+      selectedParticipant: value,
+      events: []
+    }, () => {
+      firebase.database().ref('events').on('child_added', (snapshot) => {
+        if (this.state.selectedParticipant === snapshot.val().participantKey) {
+          console.log('MATCH')
+          console.log(snapshot.val())
+          this.setState({
+            events: _.concat(this.state.events, snapshot.val())
+          })
+        }
+      });
+    })
+
   }
 
   render() {
@@ -121,7 +124,14 @@ export class AdminPage extends Component {
         <Card>
           <ul>
             {this.state.events.map((event, i) => {
-              return <li key={i}>{event.eventName}</li>
+              return (
+                <li key={i}>{event.eventName}
+                  <ul>
+                    <li>Event name {event.eventName}</li>
+                    <li>Timestamp {event.timestamp}</li>
+                  </ul>
+                </li>
+              )
             })}
           </ul>
         </Card>
