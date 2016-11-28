@@ -8,12 +8,24 @@ import AppBar from 'material-ui/AppBar';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
+import TextField from 'material-ui/TextField';  
+import {orange500, grey900, grey500, grey200} from 'material-ui/styles/colors';
+
 import './ChatBox.css';
 
 let style = {
   listItem: {
-    color: '#212121',
+    color: grey900,
   },
+  chatBoxInput: {
+    display: 'block',
+    position: 'fixed',
+    bottom: '0',
+    backgroundColor: grey500,
+    width: '88vw',
+    paddingLeft: '1vw',
+    paddingRight: '1vw',
+  }
 };
 
 class VisibleChatBox extends Component {
@@ -30,6 +42,17 @@ class VisibleChatBox extends Component {
           onTitleTouchTap={this.props.toggleChatBox}
         />
         {this.props.messages}
+
+        <TextField
+          id='chatBoxInput'
+          hintText='Type a message...'
+          style={style.chatBoxInput}
+          floatingLabelFixed={false}
+          underlineFocusStyle={{borderColor: grey200}}
+
+          onChange={() => console.log('form changed')}
+        />
+
       </List>
     );
   }

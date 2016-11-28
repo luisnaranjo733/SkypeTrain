@@ -15,7 +15,7 @@ export default class LabPage extends Component {
     super(props);
     this.context = context;
     this.state = {
-      isChatBoxOpen: false,
+      isChatBoxOpen: true,
       wordSearchComplete: 1,
     }
   }
