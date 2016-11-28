@@ -25,11 +25,10 @@ export class AdminPage extends Component {
     this.props.setLabVariant(value);
   }
 
-  componentDidMount() {
+  buildMenuItems = () => {
     let menuItems = []; // menu items for participant select field
     let i=1;
     
-
     firebase.database().ref('participants').once('value', (snapshot) => {
       let lastParticipantKey; // last participant's firebase key, used for default select field value
 
@@ -44,12 +43,17 @@ export class AdminPage extends Component {
         selectedParticipant: lastParticipantKey
       }, this.updateEventState);
 
-    })
+    });
+  }
+
+  componentDidMount() {
+    this.buildMenuItems();
+    this.updateEventState();
   }
 
   componentWillUnmount() {
     //unregister listeners
-    // this.settingsRef.off();
+    firebase.database().ref("events").off();
   }
 
   handleSelectChange = (event, index, value) => {;
@@ -82,11 +86,19 @@ export class AdminPage extends Component {
         });
         this.updateEventState();
       });
-      
 
       // delete chat history
 
       // delete participant
+      firebase.database().ref('participants').once('value', (snapshot) => {
+        snapshot.forEach((participant) => {
+          if (participant.key === this.state.selectedParticipant) {
+            console.log('delete')
+            participant.ref.remove();
+          }
+        })
+        this.buildMenuItems();
+      })
     }
   }
 
@@ -144,6 +156,7 @@ export class AdminPage extends Component {
             floatingLabelText="Participant"
             value={this.state.selectedParticipant}
             onChange={this.handleSelectChange}
+            disabled={!this.state.menuItems || this.state.menuItems.length === 0}
           >
             {this.state.menuItems}
           </SelectField>
