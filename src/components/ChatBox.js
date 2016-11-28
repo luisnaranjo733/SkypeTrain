@@ -29,6 +29,7 @@ class VisibleChatBox extends Component {
           onRightIconButtonTouchTap={this.props.toggleChatBox}
           onTitleTouchTap={this.props.toggleChatBox}
         />
+        {this.props.messages}
       </List>
     );
   }
@@ -81,7 +82,6 @@ export default class ChatBox extends Component {
     // } else {
     //   style.chatBox.height = CHAT_WINDOW_HEIGHT;
     // }
-    console.log('tap')
     this.props.toggleChatBoxOpen();
   }
   
@@ -120,8 +120,8 @@ export default class ChatBox extends Component {
     return (
       <span>
         {this.props.isChatBoxOpen ? 
-          <VisibleChatBox toggleChatBox={this.toggleChatBox} /> :
-          <HiddenChatBox toggleChatBox={this.toggleChatBox} />
+          <VisibleChatBox toggleChatBox={this.toggleChatBox} messages={messages}/> :
+          <HiddenChatBox toggleChatBox={this.toggleChatBox} messages={messages} />
         }
       </span>
     );
