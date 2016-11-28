@@ -4,6 +4,7 @@ import App from './App';
 import LabPage from './components/LabPage'
 import RegisterPage from './components/RegisterPage'
 import AdminPage from './components/AdminPage'
+// import FinishedPage from './components/FinishedPage'
 import './index.css';
 
 import firebase from 'firebase';
@@ -26,6 +27,7 @@ ReactDOM.render(
       <IndexRoute component={RegisterPage}/>
       <Route path="/lab" component={LabPage}/>
       <Route path="/admin" component={AdminPage} />
+
     </Route>
   </Router>,
   document.getElementById('root')

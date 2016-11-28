@@ -40,11 +40,10 @@ export default class RegisterPage extends Component {
       let newParticipantRef = firebase.database().ref('participants').push();
       newParticipantRef.set({
         name: this.state.participantName
-      })
-      // firebase.database.ServerValue.TIMESTAMP // time since the Unix epoch, in milliseconds
+      });
       firebase.database().ref('events').push({
         participantKey: newParticipantRef.key,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
         eventName: 'startLab'
       })
       this.context.router.push('/lab');

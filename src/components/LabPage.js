@@ -11,8 +11,9 @@ import WordSearch from './WordSearch';
 injectTapEventPlugin();
 
 export default class LabPage extends Component {
-  constructor(props) {
+  constructor(props, context) {
     super(props);
+    this.context = context;
     this.state = {
       isChatBoxOpen: false,
     }
@@ -21,22 +22,26 @@ export default class LabPage extends Component {
   toggleChatBoxOpen = () => this.setState({isChatBoxOpen: !this.state.isChatBoxOpen})
 
   onWordSearchComplete = () => {
-    console.log('word search complete!')
+    console.log('word search complete!');
+    firebase.database().ref('participants').limitToLast(1).on('child_added', (snapshot) => {
+      firebase.database().ref('events').push({
+        participantKey: snapshot.key,
+        timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
+        eventName: 'endLab'
+      })
+    });
+    this.context.router.push('/finished');
   }
 
   componentDidMount() {
-    firebase.database().ref('wordSearch').on('value', (snapshot) => {
+    firebase.database().ref('wordSearch2').on('value', (snapshot) => {
       this.setState({wordSearchParams: snapshot.val()});
     });
 
     firebase.database().ref('settings/showAnswerKey').on('value', (snapshot) => {
       this.setState({showAnswerKey: snapshot.val()})
     })
-
-    this.participantsRef = firebase.database().ref('participants');
-    this.participantsRef.limitToLast(1).on('child_added', (snapshot) => {
-      console.log(snapshot.val());
-    });
+    // this.onWordSearchComplete();
   }
 
   componentWillUnmount() {
@@ -63,3 +68,4 @@ export default class LabPage extends Component {
     );
   }
 }
+LabPage.contextTypes = {router: React.PropTypes.object};
