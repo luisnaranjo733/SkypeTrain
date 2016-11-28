@@ -20,7 +20,17 @@ export default class LabPage extends Component {
     }
   }
 
-  toggleChatBoxOpen = () => this.setState({isChatBoxOpen: !this.state.isChatBoxOpen})
+  toggleChatBoxOpen = () => {
+    this.setState({isChatBoxOpen: !this.state.isChatBoxOpen}, () => {
+      firebase.database().ref('participants').limitToLast(1).once('child_added', (participant) => {
+        firebase.database().ref('events').push({
+          participantKey: participant.key,
+          timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
+          eventName: this.state.isChatBoxOpen ? 'openedChat' : 'closedChat'
+        })
+      })
+    })
+  }
 
   onWordSearchComplete = () => {
 
