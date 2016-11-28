@@ -161,7 +161,7 @@ export class AdminPage extends Component {
             {this.state.menuItems}
           </SelectField>
 
-          <RaisedButton onClick={this.onDeleteParticipantData} label="Delete participant data" />
+          <RaisedButton onClick={this.onDeleteParticipantData} label="Delete this participant" />
 
           <Divider />
 

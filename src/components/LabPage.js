@@ -16,20 +16,27 @@ export default class LabPage extends Component {
     this.context = context;
     this.state = {
       isChatBoxOpen: false,
+      wordSearchComplete: 1,
     }
   }
 
   toggleChatBoxOpen = () => this.setState({isChatBoxOpen: !this.state.isChatBoxOpen})
 
   onWordSearchComplete = () => {
-    console.log('word search complete!');
-    firebase.database().ref('participants').limitToLast(1).on('child_added', (snapshot) => {
+
+    console.log(`WORD SEARCH COMPLETE (${this.state.wordSearchComplete})`);
+    this.setState({wordSearchComplete: this.state.wordSearchComplete + 1});
+
+    firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
+      console.log('SNAP')
+      console.log(snapshot.val());
       firebase.database().ref('events').push({
         participantKey: snapshot.key,
         timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
         eventName: 'endLab'
       })
     });
+
     this.context.router.push('/end');
   }
 
