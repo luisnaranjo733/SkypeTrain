@@ -75,3 +75,6 @@ body {
   cursor: pointer;
 }
 
+#resultsCard {
+  background-color: red;
+}

@@ -1,18 +1,51 @@
 import React, { Component } from 'react';
+import firebase from 'firebase';
 
 import {Card, CardTitle, CardText} from 'material-ui/Card';
 import Toggle from 'material-ui/Toggle';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-
+import Divider from 'material-ui/Divider';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 export class AdminPage extends Component {
   constructor(props, context) {
     super(props);
     this.context = context;
+    this.state = {
+      events: [
+        {
+          eventName: 'startLab',
+          participantKey: '',
+          timestamp: 'time'
+        }
+      ],
+      selectedParticipant: 1
+    };
+
   }
 
   changeLabVariant = (event, value) => {
     this.props.setLabVariant(value);
+  }
+
+  componentDidMount() {
+    firebase.database().ref('events').on('child_added', (snapshot) => {
+      console.log(snapshot.val())
+    });
+  }
+
+  componentWillUnmount() {
+    //unregister listeners
+    // this.settingsRef.off();
+  }
+
+  handleSelectChange = (event, index, value) => {
+    console.log(`Event: ${event}`);
+    console.log(event.target);
+    console.log(`Index: ${index}`);
+    console.log(`Value: ${value}`);
+    this.setState({selectedParticipant: value})
   }
 
   render() {
@@ -44,6 +77,13 @@ export class AdminPage extends Component {
       )
     }
 
+    let menuItems = [];
+    let i=1;
+    firebase.database().ref('participants').on('child_added', (snapshot) => {
+      menuItems.push(<MenuItem key={i} value={snapshot.key} primaryText={snapshot.val().name} />);
+      i += 1;
+    });
+
     return (
       <div>
         <Card>
@@ -65,7 +105,25 @@ export class AdminPage extends Component {
           <p>Variant: {this.props.state.labVariant}</p>
           {radioButtons}
 
+          <SelectField
+            floatingLabelText="Frequency"
+            value={this.state.selectedParticipant}
+            onChange={this.handleSelectChange}
+          >
+            {menuItems}
+          </SelectField>
+        </Card>
 
+
+
+
+        <Divider />
+        <Card>
+          <ul>
+            {this.state.events.map((event, i) => {
+              return <li key={i}>{event.eventName}</li>
+            })}
+          </ul>
         </Card>
       </div>
     );
