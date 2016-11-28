@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 import _ from 'lodash';
 
 import IconButton from 'material-ui/IconButton';

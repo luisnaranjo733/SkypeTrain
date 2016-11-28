@@ -5,7 +5,7 @@ import Toggle from 'material-ui/Toggle';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 
-export default class AdminPage extends Component {
+export class AdminPage extends Component {
   constructor(props, context) {
     super(props);
     this.context = context;
@@ -72,3 +72,25 @@ export default class AdminPage extends Component {
   }
 }
 AdminPage.contextTypes = {router: React.PropTypes.object};
+
+
+export class EndPage extends Component {
+  constructor(props, context) {
+    super(props);
+    this.context = context;
+  }
+
+  render() {
+    return (
+      <div>
+        <Card>
+          <CardTitle title="Done" subtitle="Thank you!" />
+          <CardText>
+            Thank you for participating in our lab!
+          </CardText>
+        </Card>
+      </div>
+    );
+  }
+}
+EndPage.contextTypes = {router: React.PropTypes.object};

@@ -30,7 +30,7 @@ export default class LabPage extends Component {
         eventName: 'endLab'
       })
     });
-    this.context.router.push('/finished');
+    this.context.router.push('/end');
   }
 
   componentDidMount() {
@@ -47,7 +47,7 @@ export default class LabPage extends Component {
   componentWillUnmount() {
     //unregister listeners
     firebase.database().ref('wordSearch').off();
-    this.participantsRef.off();
+    firebase.database().ref('settings/showAnswerKey').off();
   }
 
   render() {

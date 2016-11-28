@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
-import LabPage from './components/LabPage'
-import RegisterPage from './components/RegisterPage'
-import AdminPage from './components/AdminPage'
-// import FinishedPage from './components/FinishedPage'
+import LabPage from './components/LabPage';
+import RegisterPage from './components/RegisterPage';
+import {AdminPage, EndPage} from './components/AdminPage';
+
 import './index.css';
 
 import firebase from 'firebase';
@@ -27,6 +27,7 @@ ReactDOM.render(
       <IndexRoute component={RegisterPage}/>
       <Route path="/lab" component={LabPage}/>
       <Route path="/admin" component={AdminPage} />
+      <Route path="/end" component={EndPage} />
 
     </Route>
   </Router>,
