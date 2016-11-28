@@ -6,6 +6,7 @@ import {Card, CardTitle, CardText} from 'material-ui/Card';
 import Toggle from 'material-ui/Toggle';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Divider from 'material-ui/Divider';
+import RaisedButton from 'material-ui/RaisedButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
@@ -68,7 +69,25 @@ export class AdminPage extends Component {
       });
       this.setState({events: events});
     });
+  }
 
+  onDeleteParticipantData = () => {
+    if (this.state.selectedParticipant) {
+      // delete events
+      firebase.database().ref('events').once('value', (snapshot) => {
+        snapshot.forEach((event) => {
+          if (event.val().participantKey === this.state.selectedParticipant) {
+            event.ref.remove();
+          }
+        });
+        this.updateEventState();
+      });
+      
+
+      // delete chat history
+
+      // delete participant
+    }
   }
 
   render() {
@@ -121,35 +140,31 @@ export class AdminPage extends Component {
           <p>Variant: {this.props.state.labVariant}</p>
           {radioButtons}
 
-          {this.state.menuItems ? 
-            <SelectField
-              floatingLabelText="Participant"
-              value={this.state.selectedParticipant}
-              onChange={this.handleSelectChange}
-            >
-              {this.state.menuItems}
-            </SelectField>
-            : <span />}
+          <SelectField
+            floatingLabelText="Participant"
+            value={this.state.selectedParticipant}
+            onChange={this.handleSelectChange}
+          >
+            {this.state.menuItems}
+          </SelectField>
 
-        </Card>
+          <RaisedButton onClick={this.onDeleteParticipantData} label="Delete participant data" />
 
+          <Divider />
 
+            <ul>
+              {this.state.events.map((event, i) => {
+                return (
+                  <li key={i}>{event.eventName}
+                    <ul>
+                      <li>Event name {event.eventName}</li>
+                      <li>Timestamp {event.timestamp}</li>
+                    </ul>
+                  </li>
+                )
+              })}
+            </ul>
 
-
-        <Divider />
-        <Card>
-          <ul>
-            {this.state.events.map((event, i) => {
-              return (
-                <li key={i}>{event.eventName}
-                  <ul>
-                    <li>Event name {event.eventName}</li>
-                    <li>Timestamp {event.timestamp}</li>
-                  </ul>
-                </li>
-              )
-            })}
-          </ul>
         </Card>
       </div>
     );
