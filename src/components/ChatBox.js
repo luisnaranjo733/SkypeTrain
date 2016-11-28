@@ -31,8 +31,12 @@ let style = {
 };
 
 class VisibleChatBox extends Component {
-  render() {
 
+  onInputChanged = (e) => {
+    this.props.onInputChanged(e);
+  }
+
+  render() {
     const keyboardEvents = {
       keyMap: {
         enter: 'enter'
@@ -62,8 +66,8 @@ class VisibleChatBox extends Component {
             style={style.chatBoxInput}
             floatingLabelFixed={false}
             underlineFocusStyle={{borderColor: grey200}}
-
-            onChange={this.props.onInputChanged}
+            value={this.props.message}
+            onChange={this.onInputChanged}
           />
         </HotKeys>
 
@@ -109,7 +113,8 @@ export default class ChatBox extends Component {
           icon: 'http://www.material-ui.com/images/kolage-128.jpg',
           message: 'Yo!'
         }
-      ]
+      ],
+      message: ''
     };
   }
 
@@ -119,6 +124,14 @@ export default class ChatBox extends Component {
 
   onSendMessage = () => {
     console.log(this.state.message);
+    this.setState({
+      messages: _.concat(this.state.messages, {
+        sender: '',
+        icon: 'http://www.material-ui.com/images/kolage-128.jpg',
+        message: this.state.message
+      }),
+      message: ''
+    })
   }
 
   toggleChatBox = () => {
@@ -166,7 +179,7 @@ export default class ChatBox extends Component {
       <span>
         {this.props.isChatBoxOpen ? 
           <VisibleChatBox toggleChatBox={this.toggleChatBox} messages={messages}
-            onInputChanged={this.onInputChanged} onSendMessage={this.onSendMessage}
+            onInputChanged={this.onInputChanged} onSendMessage={this.onSendMessage} message={this.state.message}
           /> :
           <HiddenChatBox toggleChatBox={this.toggleChatBox} messages={messages} />
         }
