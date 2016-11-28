@@ -131,6 +131,11 @@ export class AdminPage extends Component {
       )
     }
 
+    let firstTimestamp;
+    if (this.state.events[0]) {
+      firstTimestamp = this.state.events[0].timestamp;
+    }
+    
     return (
       <div>
         <Card>
@@ -170,8 +175,7 @@ export class AdminPage extends Component {
                 return (
                   <li key={i}>{event.eventName}
                     <ul>
-                      <li>Event name {event.eventName}</li>
-                      <li>Timestamp {event.timestamp}</li>
+                      <li>Seconds from start of lab {(event.timestamp - firstTimestamp) / 1000}</li>
                     </ul>
                   </li>
                 )
