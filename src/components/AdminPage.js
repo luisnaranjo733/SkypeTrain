@@ -25,6 +25,25 @@ export class AdminPage extends Component {
   }
 
   componentDidMount() {
+    let menuItems = []; // menu items for participant select field
+    let i=1;
+    
+
+    firebase.database().ref('participants').once('value', (snapshot) => {
+      let lastParticipantKey; // last participant's firebase key, used for default select field value
+
+      snapshot.forEach((item) => {
+        menuItems.push(<MenuItem key={i} value={item.key} primaryText={item.val().name} />);
+        i += 1;
+        lastParticipantKey = item.key;
+      });
+
+      this.setState({
+        menuItems: menuItems,
+        selectedParticipant: lastParticipantKey
+      }, this.updateEventState);
+
+    })
   }
 
   componentWillUnmount() {
@@ -32,22 +51,26 @@ export class AdminPage extends Component {
     // this.settingsRef.off();
   }
 
-  handleSelectChange = (event, index, value) => {
-    console.log(value);
+  handleSelectChange = (event, index, value) => {;
     this.setState({
       selectedParticipant: value,
       events: []
-    }, () => {
-      firebase.database().ref('events').on('child_added', (snapshot) => {
-        if (this.state.selectedParticipant === snapshot.val().participantKey) {
-          console.log('MATCH')
-          console.log(snapshot.val())
-          this.setState({
-            events: _.concat(this.state.events, snapshot.val())
-          })
+    }, this.updateEventState);
+  }
+
+  updateEventState = () => {
+    console.log(`Fetch state for ${this.state.selectedParticipant}`);
+    firebase.database().ref('events').once('value', (snapshot) => {
+      let events = [];
+      snapshot.forEach((event) => {
+        if (event.val().participantKey === this.state.selectedParticipant) {
+          events.push(event.val());
         }
       });
-    })
+      this.setState({events: events});
+      console.log('EVENTS');
+      console.log(events);
+    });
 
   }
 
@@ -80,13 +103,6 @@ export class AdminPage extends Component {
       )
     }
 
-    let menuItems = [];
-    let i=1;
-    firebase.database().ref('participants').on('child_added', (snapshot) => {
-      menuItems.push(<MenuItem key={i} value={snapshot.key} primaryText={snapshot.val().name} />);
-      i += 1;
-    });
-
     return (
       <div>
         <Card>
@@ -108,13 +124,16 @@ export class AdminPage extends Component {
           <p>Variant: {this.props.state.labVariant}</p>
           {radioButtons}
 
-          <SelectField
-            floatingLabelText="Frequency"
-            value={this.state.selectedParticipant}
-            onChange={this.handleSelectChange}
-          >
-            {menuItems}
-          </SelectField>
+          {this.state.menuItems ? 
+            <SelectField
+              floatingLabelText="Participant"
+              value={this.state.selectedParticipant}
+              onChange={this.handleSelectChange}
+            >
+              {this.state.menuItems}
+            </SelectField>
+            : <span />}
+
         </Card>
 
 
