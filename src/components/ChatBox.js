@@ -11,24 +11,6 @@ import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import './ChatBox.css';
 
 let style = {
-  // chatBox: {
-  //   display: 'block',
-  //   position: 'fixed',
-  //   bottom: '0',
-  //   left: '0',
-  //   right: '0',
-  //   width: '90vw',
-    
-  //   height: '',
-  //   marginLeft: 'auto',
-  //   marginRight: 'auto',
-  //   paddingTop: '0',
-
-  //   backgroundColor: '#EEEEEE',
-  // },
-  // title: {
-  //   cursor: 'pointer',
-  // },
   listItem: {
     color: '#212121',
   },
@@ -37,7 +19,17 @@ let style = {
 class VisibleChatBox extends Component {
   render() {
     return (
-      <p />
+      <List className='visibleChatBox' style={{paddingTop: '0px', paddingBottom: '8px'}}>
+        <AppBar
+          title={
+            <span className='chatBoxTitle'>Chat</span>
+          }
+          showMenuIconButton={false}
+          iconElementRight={<IconButton><NavigationClose /></IconButton>}
+          onRightIconButtonTouchTap={this.props.toggleChatBox}
+          onTitleTouchTap={this.props.toggleChatBox}
+        />
+      </List>
     );
   }
 }
@@ -45,7 +37,7 @@ class VisibleChatBox extends Component {
 class HiddenChatBox extends Component {
   render() {
     return (
-      <List className='hiddenChatBox' style={{paddingTop: '0', paddingBottom: '8'}}>
+      <List className='hiddenChatBox' style={{paddingTop: '0px', paddingBottom: '8px'}}>
         <AppBar
           title={
             <span className='chatBoxTitle'>Chat (4)</span>
@@ -89,6 +81,7 @@ export default class ChatBox extends Component {
     // } else {
     //   style.chatBox.height = CHAT_WINDOW_HEIGHT;
     // }
+    console.log('tap')
     this.props.toggleChatBoxOpen();
   }
   
@@ -122,8 +115,15 @@ export default class ChatBox extends Component {
 
     });
 
+    let chatBox = <VisibleChatBox toggleChatBox={this.toggleChatBox} />
+
     return (
-      <HiddenChatBox toggleChatBox={this.toggleChatBox} />
+      <span>
+        {this.props.isChatBoxOpen ? 
+          <VisibleChatBox toggleChatBox={this.toggleChatBox} /> :
+          <HiddenChatBox toggleChatBox={this.toggleChatBox} />
+        }
+      </span>
     );
   }
 }
