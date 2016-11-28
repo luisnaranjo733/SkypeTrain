@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
+import {HotKeys} from 'react-hotkeys';
 
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
@@ -31,6 +32,16 @@ let style = {
 
 class VisibleChatBox extends Component {
   render() {
+
+    const keyboardEvents = {
+      keyMap: {
+        enter: 'enter'
+      },
+      handlers: {
+       enter: this.props.onSendMessage
+      }
+    }
+
     return (
       <List className='visibleChatBox' style={{paddingTop: '0px', paddingBottom: '8px'}}>
         <AppBar
@@ -43,17 +54,18 @@ class VisibleChatBox extends Component {
           onTitleTouchTap={this.props.toggleChatBox}
         />
         {this.props.messages}
-        <RaisedButton onClick={this.props.onSendMessage} label="Send message" primary={true}/>
 
-        <TextField
-          id='chatBoxInput'
-          hintText='Type a message...'
-          style={style.chatBoxInput}
-          floatingLabelFixed={false}
-          underlineFocusStyle={{borderColor: grey200}}
+        <HotKeys keyMap={keyboardEvents.keyMap} handlers={keyboardEvents.handlers}>
+          <TextField
+            id='chatBoxInput'
+            hintText='Type a message...'
+            style={style.chatBoxInput}
+            floatingLabelFixed={false}
+            underlineFocusStyle={{borderColor: grey200}}
 
-          onChange={this.props.onInputChanged}
-        />
+            onChange={this.props.onInputChanged}
+          />
+        </HotKeys>
 
       </List>
     );
