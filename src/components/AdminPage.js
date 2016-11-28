@@ -178,6 +178,10 @@ export class AdminPage extends Component {
                   <li key={i}>{event.eventName}
                     <ul>
                       <li>Seconds from start of lab {(event.timestamp - firstTimestamp) / 1000}</li>
+                      {event.message ? 
+                        <li>Message: {event.message}</li> :
+                        <span/>
+                      }
                     </ul>
                   </li>
                 )

@@ -123,7 +123,7 @@ export default class ChatBox extends Component {
   }
 
   onSendMessage = () => {
-    console.log(this.state.message);
+    this.props.onSendMessage(this.state.message);
     this.setState({
       messages: _.concat(this.state.messages, {
         sender: '',

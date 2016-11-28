@@ -15,7 +15,7 @@ export default class LabPage extends Component {
     super(props);
     this.context = context;
     this.state = {
-      isChatBoxOpen: true,
+      isChatBoxOpen: false,
       wordSearchComplete: 1,
     }
   }
@@ -38,8 +38,6 @@ export default class LabPage extends Component {
     this.setState({wordSearchComplete: this.state.wordSearchComplete + 1});
 
     firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
-      console.log('SNAP')
-      console.log(snapshot.val());
       firebase.database().ref('events').push({
         participantKey: snapshot.key,
         timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
@@ -48,6 +46,17 @@ export default class LabPage extends Component {
     });
 
     this.context.router.push('/end');
+  }
+
+  onSendMessage = (message) => {
+    firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
+      firebase.database().ref('events').push({
+        participantKey: snapshot.key,
+        timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
+        eventName: 'sendMessage',
+        message: message
+      })
+    });
   }
 
   componentDidMount() {
@@ -79,7 +88,7 @@ export default class LabPage extends Component {
             />
             : <p>Loading</p>
           }
-          <ChatBox isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
+          <ChatBox onSendMessage={this.onSendMessage} isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
         </div>
       
     );
