@@ -59,6 +59,17 @@ export default class LabPage extends Component {
     });
   }
 
+  onReceiveMessage = (message) => {
+    firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
+      firebase.database().ref('events').push({
+        participantKey: snapshot.key,
+        timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
+        eventName: 'receiveMessage',
+        message: message
+      })
+    });
+  }
+
   componentDidMount() {
     firebase.database().ref('wordSearch2').on('value', (snapshot) => {
       this.setState({wordSearchParams: snapshot.val()});
@@ -88,7 +99,7 @@ export default class LabPage extends Component {
             />
             : <p>Loading</p>
           }
-          <ChatBox onSendMessage={this.onSendMessage} isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
+          <ChatBox onReceiveMessage={this.onReceiveMessage} onSendMessage={this.onSendMessage} isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
         </div>
       
     );

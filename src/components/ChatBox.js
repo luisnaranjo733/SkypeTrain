@@ -42,7 +42,8 @@ class VisibleChatBox extends Component {
         enter: 'enter'
       },
       handlers: {
-       enter: this.props.onSendMessage
+      //  enter: this.props.onSendMessage
+      enter: this.props.onReceiveMessage
       }
     }
 
@@ -134,6 +135,18 @@ export default class ChatBox extends Component {
     })
   }
 
+  onReceiveMessage = () => {
+    this.props.onReceiveMessage(this.state.message);
+    this.setState({
+      messages: _.concat(this.state.messages, {
+        sender: 'Laura',
+        icon: 'http://www.material-ui.com/images/uxceo-128.jpg',
+        message: this.state.message
+      }),
+      message: ''
+    })
+  }
+
   toggleChatBox = () => {
     // if (this.props.isChatBoxOpen) {
     //   style.chatBox.height = '';
@@ -179,7 +192,7 @@ export default class ChatBox extends Component {
       <span>
         {this.props.isChatBoxOpen ? 
           <VisibleChatBox toggleChatBox={this.toggleChatBox} messages={messages}
-            onInputChanged={this.onInputChanged} onSendMessage={this.onSendMessage} message={this.state.message}
+            onInputChanged={this.onInputChanged} onReceiveMessage={this.onReceiveMessage} onSendMessage={this.onSendMessage} message={this.state.message}
           /> :
           <HiddenChatBox toggleChatBox={this.toggleChatBox} messages={messages} />
         }
