@@ -147,6 +147,8 @@ export class AdminPage extends Component {
             Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
           </CardText>
 
+          <RaisedButton primary={true} onClick={() => this.context.router.push('/lab')} label="Go to lab" />
+
           <br/><br/>
 
           <div style={styles.block}>
@@ -166,7 +168,7 @@ export class AdminPage extends Component {
             {this.state.menuItems}
           </SelectField>
 
-          <RaisedButton onClick={this.onDeleteParticipantData} label="Delete this participant" />
+          <RaisedButton primary={true} onClick={this.onDeleteParticipantData} label="Delete this participant" />
 
           <Divider />
 
