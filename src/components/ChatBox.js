@@ -10,6 +10,7 @@ import Divider from 'material-ui/Divider';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import TextField from 'material-ui/TextField';  
 import {orange500, grey900, grey500, grey200} from 'material-ui/styles/colors';
+import RaisedButton from 'material-ui/RaisedButton';
 
 import './ChatBox.css';
 
@@ -42,6 +43,7 @@ class VisibleChatBox extends Component {
           onTitleTouchTap={this.props.toggleChatBox}
         />
         {this.props.messages}
+        <RaisedButton onClick={this.props.onSendMessage} label="Send message" primary={true}/>
 
         <TextField
           id='chatBoxInput'
@@ -50,7 +52,7 @@ class VisibleChatBox extends Component {
           floatingLabelFixed={false}
           underlineFocusStyle={{borderColor: grey200}}
 
-          onChange={() => console.log('form changed')}
+          onChange={this.props.onInputChanged}
         />
 
       </List>
@@ -99,6 +101,14 @@ export default class ChatBox extends Component {
     };
   }
 
+  onInputChanged = (e) => {
+    this.setState({message: e.target.value})
+  }
+
+  onSendMessage = () => {
+    console.log(this.state.message);
+  }
+
   toggleChatBox = () => {
     // if (this.props.isChatBoxOpen) {
     //   style.chatBox.height = '';
@@ -143,7 +153,9 @@ export default class ChatBox extends Component {
     return (
       <span>
         {this.props.isChatBoxOpen ? 
-          <VisibleChatBox toggleChatBox={this.toggleChatBox} messages={messages}/> :
+          <VisibleChatBox toggleChatBox={this.toggleChatBox} messages={messages}
+            onInputChanged={this.onInputChanged} onSendMessage={this.onSendMessage}
+          /> :
           <HiddenChatBox toggleChatBox={this.toggleChatBox} messages={messages} />
         }
       </span>
