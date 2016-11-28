@@ -8,33 +8,60 @@ import AppBar from 'material-ui/AppBar';
 import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
-
-
-const CHAT_WINDOW_HEIGHT = '90vh'
+import './ChatBox.css';
 
 let style = {
-  chatBox: {
-    display: 'block',
-    position: 'fixed',
-    bottom: '0',
-    left: '0',
-    right: '0',
-    width: '90vw',
+  // chatBox: {
+  //   display: 'block',
+  //   position: 'fixed',
+  //   bottom: '0',
+  //   left: '0',
+  //   right: '0',
+  //   width: '90vw',
     
-    height: '',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    paddingTop: '0',
+  //   height: '',
+  //   marginLeft: 'auto',
+  //   marginRight: 'auto',
+  //   paddingTop: '0',
 
-    backgroundColor: '#EEEEEE',
-  },
-  title: {
-    cursor: 'pointer',
-  },
+  //   backgroundColor: '#EEEEEE',
+  // },
+  // title: {
+  //   cursor: 'pointer',
+  // },
   listItem: {
     color: '#212121',
   },
 };
+
+class VisibleChatBox extends Component {
+  render() {
+    return (
+      <p />
+    );
+  }
+}
+
+class HiddenChatBox extends Component {
+  render() {
+    return (
+      <List className='hiddenChatBox' style={{paddingTop: '0', paddingBottom: '8'}}>
+        <AppBar
+          title={
+            <span className='chatBoxTitle'>Chat (4)</span>
+          }
+          showMenuIconButton={false}
+          onTitleTouchTap={this.props.toggleChatBox}
+          iconElementRight={
+            <IconButton tooltip="Notifications">
+              <NotificationsIcon />
+            </IconButton>
+          }
+        />
+      </List>
+    );
+  }
+}
 
 
 export default class ChatBox extends Component {
@@ -57,11 +84,11 @@ export default class ChatBox extends Component {
   }
 
   toggleChatBox = () => {
-    if (this.props.isChatBoxOpen) {
-      style.chatBox.height = '';
-    } else {
-      style.chatBox.height = CHAT_WINDOW_HEIGHT;
-    }
+    // if (this.props.isChatBoxOpen) {
+    //   style.chatBox.height = '';
+    // } else {
+    //   style.chatBox.height = CHAT_WINDOW_HEIGHT;
+    // }
     this.props.toggleChatBoxOpen();
   }
   
@@ -96,36 +123,7 @@ export default class ChatBox extends Component {
     });
 
     return (
-      <List style={style.chatBox}>
-        {
-          this.props.isChatBoxOpen ? 
-            <AppBar
-              style={style.chatBoxHeader}
-              title={<span style={style.title}>Chat</span>}
-              showMenuIconButton={false}
-              iconElementRight={<IconButton><NavigationClose /></IconButton>}
-              onRightIconButtonTouchTap={this.toggleChatBox}
-              onTitleTouchTap={this.toggleChatBox}
-            />
-          :
-            <AppBar
-              style={style.chatBoxHeader}
-              title={
-                <span style={style.title}>Chat (4)</span>
-              }
-              showMenuIconButton={false}
-              onTitleTouchTap={this.toggleChatBox}
-              iconElementRight={
-                <IconButton tooltip="Notifications">
-                  <NotificationsIcon />
-                </IconButton>
-              }
-            />
-        }
-
-        {this.props.isChatBoxOpen ? messages : <span />}
-
-      </List>
+      <HiddenChatBox toggleChatBox={this.toggleChatBox} />
     );
   }
 }
