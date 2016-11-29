@@ -103,11 +103,23 @@ class VisibleChatBox extends Component {
 
 class HiddenChatBox extends Component {
   render() {
+    let nUnreadMessages = this.props.nUnreadMessages ? <span className='nUnreadMessages'>({this.props.nUnreadMessages})</span> : <span/>;
+    // let nUnreadMessages;
+
+    // console.log(`nUnreadMessages: ${this.props.nUnreadMessages}`);
+    // if (this.props.nUnreadMessages) {
+    //   console.log('we have unread')
+    //   nUnreadMessages = <span className='nUnreadMessages'>({this.props.nUnreadMessages})</span>;
+    // } else {
+    //   console.log('we dont have unread')
+    //   nUnreadMessages = <span/>;
+    // }
+
     return (
       <List className='hiddenChatBox' style={{paddingTop: '0px', paddingBottom: '8px'}}>
         <AppBar
           title={
-            <span className='chatBoxTitle'>Chat ({this.props.nUnreadMessages})</span>
+            <span className='chatBoxTitle'>Chat {nUnreadMessages}</span>
           }
           showMenuIconButton={false}
           onTitleTouchTap={this.props.toggleChatBox}

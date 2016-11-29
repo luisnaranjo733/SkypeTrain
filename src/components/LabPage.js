@@ -75,6 +75,7 @@ export default class LabPage extends Component {
     firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
       firebase.database().ref('events').push({
         participantKey: snapshot.key,
+        sender: true,
         icon: 'http://www.material-ui.com/images/uxceo-128.jpg',
         timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
         eventName: 'receiveMessage',

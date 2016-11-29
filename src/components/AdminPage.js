@@ -53,6 +53,7 @@ export class AdminPage extends Component {
 
   componentWillUnmount() {
     //unregister listeners
+    firebase.database().ref("participants").off();
     firebase.database().ref("events").off();
   }
 
@@ -93,7 +94,6 @@ export class AdminPage extends Component {
       firebase.database().ref('participants').once('value', (snapshot) => {
         snapshot.forEach((participant) => {
           if (participant.key === this.state.selectedParticipant) {
-            console.log('delete')
             participant.ref.remove();
           }
         })
