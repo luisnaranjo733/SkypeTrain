@@ -14,6 +14,7 @@ class App extends Component {
     this.context = context;
     this.state = {
       labVariant: '',
+      settingsLoaded: false,
     }
     this.settingsRef = firebase.database().ref('settings');
   }
@@ -84,7 +85,31 @@ class App extends Component {
           />
         </MuiThemeProvider>
       );
+    } else {
+      appBar = (
+        <MuiThemeProvider>
+          <AppBar
+            style={{
+              backgroundColor: '#9E9E9E',
+              color: 'white'
+            }}
+            title="Typing Frenzy Experiment"
+            onTitleTouchTap={this.goHome}
+            showMenuIconButton={false}
+            iconElementRight={<FlatButton label="Settings" />}
+            onRightIconButtonTouchTap={this.goToSettings}
+          />
+        </MuiThemeProvider>
+      )
     }
+
+    let children = (
+      this.props.children && React.cloneElement(this.props.children, {
+        state: this.state,
+        setLabVariant: this.setLabVariant,
+        toggleAnswerKey: this.toggleAnswerKey
+      })
+    );
 
     return (
       <div>
@@ -93,11 +118,7 @@ class App extends Component {
         </header>
         <main>
           <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-          {this.props.children && React.cloneElement(this.props.children, {
-            state: this.state,
-            setLabVariant: this.setLabVariant,
-            toggleAnswerKey: this.toggleAnswerKey
-          })}
+          {this.state.settingsLoaded ? children : <p>LOADING</p>}
           </MuiThemeProvider>
         </main>
       </div>

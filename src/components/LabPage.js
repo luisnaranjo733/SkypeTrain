@@ -79,7 +79,21 @@ export default class LabPage extends Component {
     firebase.database().ref('settings/showAnswerKey').on('value', (snapshot) => {
       this.setState({showAnswerKey: snapshot.val()})
     })
-    // this.onWordSearchComplete();
+
+    if (this.props.state.labVariant) {
+      firebase.database().ref('labVariants').once('value', (snapshot) => {
+        snapshot.forEach((labVariant) => {
+          if (labVariant.val().labVariant === this.props.state.labVariant) {
+            labVariant.val().messages.forEach((message) => {
+              window.setTimeout(() => {
+                console.log(message.message)
+              }, message.timeout)
+            })
+          }
+        })
+      })
+    }
+
   }
 
   componentWillUnmount() {
@@ -89,17 +103,6 @@ export default class LabPage extends Component {
   }
 
   render() {
-    if (this.props.state.labVariant) {
-      console.log(`Selected lab variant: ${this.props.state.labVariant}`)
-      firebase.database().ref('labVariants').once('value', (snapshot) => {
-        snapshot.forEach((labVariant) => {
-          // console.log(labVariant.val());
-          if (labVariant.val().labVariant === this.props.state.labVariant) {
-            console.log(labVariant.val())
-          }
-        })
-      })
-    }
 
 
 
