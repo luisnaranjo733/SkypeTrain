@@ -86,7 +86,8 @@ export default class LabPage extends Component {
           if (labVariant.val().labVariant === this.props.state.labVariant) {
             labVariant.val().messages.forEach((message) => {
               window.setTimeout(() => {
-                console.log(message.message)
+                console.log(message.message);
+                this.onReceiveMessage(message.message);
               }, message.timeout)
             })
           }
