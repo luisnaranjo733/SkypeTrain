@@ -21,7 +21,16 @@ export default class LabPage extends Component {
     }
   }
 
-  toggleChatBoxOpen = () => {
+  toggleChatBoxOpen = (chatHistory) => {
+
+    // if chatBox is about to open, then we set all unread messages to read
+    if (!this.state.isChatBoxOpen) {
+      chatHistory.forEach((message) => {
+        // console.log(message)
+        firebase.database().ref('events').child(message.messageKey).update({unread: false});
+      })
+    }
+
     this.setState({isChatBoxOpen: !this.state.isChatBoxOpen}, () => {
       firebase.database().ref('participants').limitToLast(1).once('child_added', (participant) => {
         firebase.database().ref('events').push({
@@ -54,10 +63,11 @@ export default class LabPage extends Component {
         icon: 'http://www.material-ui.com/images/kolage-128.jpg',
         timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
         eventName: 'sendMessage',
-        message: message
+        message: message,
+        // unread: true,
       };
       firebase.database().ref('events').push(messageObj)
-      this.setState({messages: _.concat(this.state.messages, messageObj)})
+      // this.setState({messages: _.concat(this.state.messages, messageObj)})
     });
   }
 
@@ -89,22 +99,25 @@ export default class LabPage extends Component {
         snapshot.forEach((labVariant) => {
           if (labVariant.val().labVariant === this.props.state.labVariant) {
             labVariant.val().messages.forEach((message) => {
+              // set timeOut for receive message event
               window.setTimeout(() => {
                 this.onReceiveMessage(message.message); // log message in firebase
-                this.setState({messages: _.concat(this.state.messages, message)})
+                // this.setState({messages: _.concat(this.state.messages, message)}) // set state for ChatBox
               }, message.timeout)
             })
           }
         })
       })
     }
-
+    
   }
 
   componentWillUnmount() {
     //unregister listeners
     firebase.database().ref('wordSearch').off();
     firebase.database().ref('settings/showAnswerKey').off();
+    firebase.database().ref('labVariants').off();
+    firebase.database().ref("participants").off();
   }
 
   onWordCompleted = (word) => {
@@ -130,7 +143,7 @@ export default class LabPage extends Component {
             />
             : <p>Loading</p>
           }
-          <ChatBox messages={this.state.messages} onReceiveMessage={this.onReceiveMessage} onSendMessage={this.onSendMessage} isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
+          <ChatBox onReceiveMessage={this.onReceiveMessage} onSendMessage={this.onSendMessage} isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
         </div>
       
     );
