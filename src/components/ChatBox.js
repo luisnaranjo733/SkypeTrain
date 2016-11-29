@@ -41,8 +41,7 @@ class VisibleChatBox extends Component {
         enter: 'enter'
       },
       handlers: {
-      //  enter: this.props.onSendMessage
-      enter: this.props.onReceiveMessage
+       enter: this.props.onSendMessage
       }
     }
 
@@ -102,18 +101,6 @@ export default class ChatBox extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [
-        {
-          sender: 'Laura',
-          icon: 'http://www.material-ui.com/images/uxceo-128.jpg',
-          message: 'Hey there!'
-        },
-        {
-          sender: '',
-          icon: 'http://www.material-ui.com/images/kolage-128.jpg',
-          message: 'Yo!'
-        }
-      ],
       message: ''
     };
   }
@@ -122,28 +109,12 @@ export default class ChatBox extends Component {
     this.setState({message: e.target.value})
   }
 
-  onSendMessage = () => {
-    this.props.onSendMessage(this.state.message);
-    this.setState({
-      messages: _.concat(this.state.messages, {
-        sender: '',
-        icon: 'http://www.material-ui.com/images/kolage-128.jpg',
-        message: this.state.message
-      }),
-      message: ''
-    })
-  }
-
-  onReceiveMessage = () => {
-    this.props.onReceiveMessage(this.state.message);
-    this.setState({
-      messages: _.concat(this.state.messages, {
-        sender: 'Laura',
-        icon: 'http://www.material-ui.com/images/uxceo-128.jpg',
-        message: this.state.message
-      }),
-      message: ''
-    })
+  onSendMessage = (message) => {
+    console.log('sending it');
+    console.log(message);
+    console.log(this.state.message)
+    this.props.onSendMessage(this.state.message)
+    this.setState({message: ''});
   }
 
   toggleChatBox = () => {
@@ -158,8 +129,7 @@ export default class ChatBox extends Component {
 
   render() {
     
-
-    var messages = this.state.messages.map((message, i) => {
+    let messages = this.props.messages.map((message, i) => {
       // if there is a sender defined, else the user is sending
       if (message.sender) {
         return (
@@ -184,12 +154,12 @@ export default class ChatBox extends Component {
       }
 
     });
-    
+
     return (
       <span>
         {this.props.isChatBoxOpen ? 
           <VisibleChatBox toggleChatBox={this.toggleChatBox} messages={messages}
-            onInputChanged={this.onInputChanged} onReceiveMessage={this.onReceiveMessage} onSendMessage={this.onSendMessage} message={this.state.message}
+            onInputChanged={this.onInputChanged} onReceiveMessage={this.props.onReceiveMessage} onSendMessage={this.onSendMessage} message={this.state.message}
           /> :
           <HiddenChatBox toggleChatBox={this.toggleChatBox} messages={messages} />
         }

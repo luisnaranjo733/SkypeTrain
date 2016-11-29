@@ -17,6 +17,7 @@ export default class LabPage extends Component {
     this.state = {
       isChatBoxOpen: false,
       wordSearchComplete: 1,
+      messages: []
     }
   }
 
@@ -49,13 +50,19 @@ export default class LabPage extends Component {
   }
 
   onSendMessage = (message) => {
+    console.log(`Send message: ${message}`)
+    console.log(message);
     firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
-      firebase.database().ref('events').push({
+      let messageObj = {
         participantKey: snapshot.key,
+        icon: 'http://www.material-ui.com/images/kolage-128.jpg',
         timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
         eventName: 'sendMessage',
         message: message
-      })
+      };
+      console.log(messageObj)
+      firebase.database().ref('events').push(messageObj)
+      this.setState({messages: _.concat(this.state.messages, messageObj)})
     });
   }
 
@@ -63,6 +70,7 @@ export default class LabPage extends Component {
     firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
       firebase.database().ref('events').push({
         participantKey: snapshot.key,
+        icon: 'http://www.material-ui.com/images/uxceo-128.jpg',
         timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
         eventName: 'receiveMessage',
         message: message
@@ -87,7 +95,8 @@ export default class LabPage extends Component {
             labVariant.val().messages.forEach((message) => {
               window.setTimeout(() => {
                 console.log(message.message);
-                this.onReceiveMessage(message.message);
+                this.onReceiveMessage(message.message); // log message in firebase
+                this.setState({messages: _.concat(this.state.messages, message)})
               }, message.timeout)
             })
           }
@@ -106,7 +115,8 @@ export default class LabPage extends Component {
   render() {
 
 
-
+    console.log('message list')
+    console.log(this.state.messages)
     return (
 
         <div>      
@@ -117,7 +127,7 @@ export default class LabPage extends Component {
             />
             : <p>Loading</p>
           }
-          <ChatBox onReceiveMessage={this.onReceiveMessage} onSendMessage={this.onSendMessage} isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
+          <ChatBox messages={this.state.messages} onReceiveMessage={this.onReceiveMessage} onSendMessage={this.onSendMessage} isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
         </div>
       
     );
