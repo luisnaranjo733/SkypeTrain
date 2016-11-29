@@ -61,6 +61,7 @@ class App extends Component {
       appBar = (
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
           <AppBar
+            className='myAppBar'
             title="Typing Frenzy Experiment"
             onTitleTouchTap={this.goHome}
             showMenuIconButton={false}
@@ -77,6 +78,7 @@ class App extends Component {
               backgroundColor: '#B71C1C',
               color: 'white'
             }}
+            className='myAppBar'
             title="Typing Frenzy Experiment"
             onTitleTouchTap={this.goHome}
             showMenuIconButton={false}

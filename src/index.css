@@ -1,3 +1,5 @@
+
+
 body {
   margin: 0;
   padding: 0;
@@ -6,13 +8,13 @@ body {
 
 .show-grid {
   padding-top: 1.5em;
+  /*border: 1px solid red; */
+  /*max-height: 77vh;*/
+  overflow: auto;
 }
 
 #grid {
   border: 1px solid black;
-  /*height: 60vh;*/
-  /*padding: 1em;*/
-
 }
 
 .row {
@@ -29,7 +31,7 @@ body {
   text-align: center;
   line-height: 1.70em;
   font-family: 'Muli', sans-serif;
-  border: 0.1px solid red;
+  /*border: 0.1px solid red;*/
 }
 
 .highlighted-letter {
@@ -78,6 +80,10 @@ body {
 
 #resultsCard {
   background-color: red;
+}
+
+.myAppBar {
+  height: 8vh;
 }
 
 .hiddenChatBox {

@@ -118,6 +118,7 @@ class HiddenChatBox extends Component {
     return (
       <List className='hiddenChatBox' style={{paddingTop: '0px', paddingBottom: '8px'}}>
         <AppBar
+          className='myAppBar'
           title={
             <span className='chatBoxTitle'>Chat {nUnreadMessages}</span>
           }
