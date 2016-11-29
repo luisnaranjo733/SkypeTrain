@@ -29,6 +29,7 @@ body {
   text-align: center;
   line-height: 1.70em;
   font-family: 'Muli', sans-serif;
+  border: 0.1px solid red;
 }
 
 .highlighted-letter {
@@ -77,4 +78,42 @@ body {
 
 #resultsCard {
   background-color: red;
+}
+
+.hiddenChatBox {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    width: 90vw;
+    /*height: 10vh;*/
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-top: 0;
+
+    /* grey 200 */
+    background-color: #EEEEEE;
+}
+
+.visibleChatBox {
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    width: 90vw;
+    height: 90vh;
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-top: 0;
+    background-color: #EEEEEE;
+}
+
+.chatBoxTitle {
+    cursor: pointer;
 }
