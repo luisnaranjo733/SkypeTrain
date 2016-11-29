@@ -34,8 +34,6 @@ export default class LabPage extends Component {
   }
 
   onWordSearchComplete = () => {
-
-    console.log(`WORD SEARCH COMPLETE (${this.state.wordSearchComplete})`);
     this.setState({wordSearchComplete: this.state.wordSearchComplete + 1});
 
     firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
@@ -50,8 +48,6 @@ export default class LabPage extends Component {
   }
 
   onSendMessage = (message) => {
-    console.log(`Send message: ${message}`)
-    console.log(message);
     firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
       let messageObj = {
         participantKey: snapshot.key,
@@ -60,7 +56,6 @@ export default class LabPage extends Component {
         eventName: 'sendMessage',
         message: message
       };
-      console.log(messageObj)
       firebase.database().ref('events').push(messageObj)
       this.setState({messages: _.concat(this.state.messages, messageObj)})
     });
@@ -80,7 +75,7 @@ export default class LabPage extends Component {
 
   componentDidMount = () => {
 
-    firebase.database().ref('wordSearch2').on('value', (snapshot) => {
+    firebase.database().ref('wordSearch').on('value', (snapshot) => {
       this.setState({wordSearchParams: snapshot.val()});
     });
 
@@ -94,7 +89,6 @@ export default class LabPage extends Component {
           if (labVariant.val().labVariant === this.props.state.labVariant) {
             labVariant.val().messages.forEach((message) => {
               window.setTimeout(() => {
-                console.log(message.message);
                 this.onReceiveMessage(message.message); // log message in firebase
                 this.setState({messages: _.concat(this.state.messages, message)})
               }, message.timeout)
@@ -112,11 +106,18 @@ export default class LabPage extends Component {
     firebase.database().ref('settings/showAnswerKey').off();
   }
 
+  onWordCompleted = (word) => {
+    firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
+      firebase.database().ref('events').push({
+        participantKey: snapshot.key,
+        timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
+        eventName: 'wordCompleted',
+        word: word
+      })
+    });
+  }
+
   render() {
-
-
-    console.log('message list')
-    console.log(this.state.messages)
     return (
 
         <div>      
@@ -124,6 +125,7 @@ export default class LabPage extends Component {
             <WordSearch labVariant={this.props.state.labVariant} showAnswerKey={this.state.showAnswerKey} 
               wordList={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height}
               width={this.state.wordSearchParams.width} onWordSearchComplete={this.onWordSearchComplete}
+              onWordCompleted={this.onWordCompleted}
             />
             : <p>Loading</p>
           }

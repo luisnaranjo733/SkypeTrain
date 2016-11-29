@@ -110,9 +110,6 @@ export default class ChatBox extends Component {
   }
 
   onSendMessage = (message) => {
-    console.log('sending it');
-    console.log(message);
-    console.log(this.state.message)
     this.props.onSendMessage(this.state.message)
     this.setState({message: ''});
   }

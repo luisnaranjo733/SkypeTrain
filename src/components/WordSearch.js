@@ -161,10 +161,12 @@ export default class WordSearch extends Component {
       // solvedWord.solved = true; // debugging
       if (solvedWord.word === word) {
         solvedWord.solved = true;
+        this.props.onWordCompleted(word);
       }
       word = this.reverseString(word);
       if (solvedWord.word === word) {
         solvedWord.solved = true;
+        this.props.onWordCompleted(word);
       }
       return solvedWord;
     });
