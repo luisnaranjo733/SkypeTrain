@@ -54,7 +54,7 @@ class App extends Component {
   }
 
   render() {
-
+    
     let appBar;
     if (this.state.labVariant === 'v1') {
       appBar = (

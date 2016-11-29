@@ -10,8 +10,7 @@ import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import NotificationsIcon from 'material-ui/svg-icons/social/notifications';
 import TextField from 'material-ui/TextField';  
-import {orange500, grey900, grey500, grey200} from 'material-ui/styles/colors';
-import RaisedButton from 'material-ui/RaisedButton';
+import {grey900, grey500, grey200} from 'material-ui/styles/colors';
 
 import './ChatBox.css';
 
@@ -185,9 +184,7 @@ export default class ChatBox extends Component {
       }
 
     });
-
-    let chatBox = <VisibleChatBox toggleChatBox={this.toggleChatBox} />
-
+    
     return (
       <span>
         {this.props.isChatBoxOpen ? 

@@ -70,7 +70,8 @@ export default class LabPage extends Component {
     });
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
+
     firebase.database().ref('wordSearch2').on('value', (snapshot) => {
       this.setState({wordSearchParams: snapshot.val()});
     });
@@ -88,6 +89,19 @@ export default class LabPage extends Component {
   }
 
   render() {
+    if (this.props.state.labVariant) {
+      console.log(`Selected lab variant: ${this.props.state.labVariant}`)
+      firebase.database().ref('labVariants').once('value', (snapshot) => {
+        snapshot.forEach((labVariant) => {
+          // console.log(labVariant.val());
+          if (labVariant.val().labVariant === this.props.state.labVariant) {
+            console.log(labVariant.val())
+          }
+        })
+      })
+    }
+
+
 
     return (
 
