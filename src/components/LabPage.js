@@ -68,7 +68,8 @@ export default class LabPage extends Component {
         icon: 'http://www.material-ui.com/images/uxceo-128.jpg',
         timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
         eventName: 'receiveMessage',
-        message: message
+        message: message,
+        unread: true,
       })
     });
   }

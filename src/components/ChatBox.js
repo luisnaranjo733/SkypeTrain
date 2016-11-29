@@ -77,11 +77,21 @@ class VisibleChatBox extends Component {
 
 class HiddenChatBox extends Component {
   render() {
+    // this.props.messages;
+    let nUnread = this.props.messages.reduce((total, message) => {
+      console.log(message)
+      if (message.unread) {
+        return total + 1;
+      } else {
+        return total;
+      }
+    }, 0);
+    console.log(`nUnread: ${nUnread}`);
     return (
       <List className='hiddenChatBox' style={{paddingTop: '0px', paddingBottom: '8px'}}>
         <AppBar
           title={
-            <span className='chatBoxTitle'>Chat (4)</span>
+            <span className='chatBoxTitle'>Chat ({nUnread})</span>
           }
           showMenuIconButton={false}
           onTitleTouchTap={this.props.toggleChatBox}
@@ -125,7 +135,6 @@ export default class ChatBox extends Component {
   
 
   render() {
-    
     let messages = this.props.messages.map((message, i) => {
       // if there is a sender defined, else the user is sending
       if (message.sender) {
@@ -158,7 +167,7 @@ export default class ChatBox extends Component {
           <VisibleChatBox toggleChatBox={this.toggleChatBox} messages={messages}
             onInputChanged={this.onInputChanged} onReceiveMessage={this.props.onReceiveMessage} onSendMessage={this.onSendMessage} message={this.state.message}
           /> :
-          <HiddenChatBox toggleChatBox={this.toggleChatBox} messages={messages} />
+          <HiddenChatBox toggleChatBox={this.toggleChatBox} messages={this.props.messages} />
         }
       </span>
     );
