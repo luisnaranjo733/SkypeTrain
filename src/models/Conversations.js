@@ -26,7 +26,7 @@ export let convo1 = [
     },
 
     {
-        relativeStartTime: 3 * 60 * 1000, // start 3 min after previous subConversation
+        relativeStartTime: 3 * 1000, // start 3 min after previous subConversation
         primaryOpeningMessage: 'What month were you born in?',
         closingMessage: {
             content: 'Okay!',
@@ -34,7 +34,7 @@ export let convo1 = [
         }
     },
     {
-        relativeStartTime: 2 * 60 * 1000, // start 2 min after previous subConversation
+        relativeStartTime: 2 * 1000, // start 2 min after previous subConversation
         primaryOpeningMessage: 'Another question for you:',
         secondaryOpeningMessage: {
             content: 'What is your major>',

@@ -82,7 +82,9 @@ class VisibleChatBox extends Component {
           onRightIconButtonTouchTap={this.props.toggleChatBox}
           onTitleTouchTap={this.props.toggleChatBox}
         />
-        {messageList}
+        <div className='message-list'>
+          {messageList}
+        </div>
 
         <HotKeys keyMap={keyboardEvents.keyMap} handlers={keyboardEvents.handlers}>
           <TextField

@@ -71,6 +71,15 @@ export default class LabPage extends Component {
     console.log(subConvo);
     window.setTimeout(() => {
       this.onReceiveMessage(subConvo.closingMessage.content);
+
+      this.setState({currentSubConvo: this.state.currentSubConvo + 1}, () => {
+        // reset state for next subConvo
+        window.setTimeout(() => {
+          subConvo = this.getCurrentSubConvo(); // update subConvo to next
+          this.beginCurrentSubConvo();
+        }, subConvo.relativeStartTime);
+      })
+
     }, subConvo.closingMessage.delay)
   }
 

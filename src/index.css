@@ -112,12 +112,24 @@ body {
     right: 0;
 
     width: 90vw;
-    height: 90vh;
+    height: 80vh;
     margin-left: auto;
     margin-right: auto;
 
     padding-top: 0;
+    /*padding-bottom: 25px;?*/
     background-color: #EEEEEE;
+
+    /*overflow: auto;*/
+}
+
+.message-list {
+  /*border: 1px solid red;*/
+  display: block;
+  overflow: auto;
+  height: 80vh;
+  margin-bottom: 500px;
+  /*margin-bottom: 500px;*/
 }
 
 .chatBoxTitle {
