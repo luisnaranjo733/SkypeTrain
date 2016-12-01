@@ -16,8 +16,6 @@ export default class LabPage extends Component {
     this.context = context;
     this.state = {
       isChatBoxOpen: false,
-      wordSearchComplete: 1,
-      messages: []
     }
   }
 
@@ -43,8 +41,6 @@ export default class LabPage extends Component {
   }
 
   onWordSearchComplete = () => {
-    this.setState({wordSearchComplete: this.state.wordSearchComplete + 1});
-
     firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
       firebase.database().ref('events').push({
         participantKey: snapshot.key,
@@ -95,20 +91,27 @@ export default class LabPage extends Component {
       this.setState({showAnswerKey: snapshot.val()})
     })
 
-    if (this.props.state.labVariant) {
-      firebase.database().ref('labVariants').once('value', (snapshot) => {
-        snapshot.forEach((labVariant) => {
-          if (labVariant.val().labVariant === this.props.state.labVariant) {
-            labVariant.val().messages.forEach((message) => {
-              // set timeOut for receive message event
-              window.setTimeout(() => {
-                this.onReceiveMessage(message.message); // log message in firebase
-                // this.setState({messages: _.concat(this.state.messages, message)}) // set state for ChatBox
-              }, message.timeout)
-            })
-          }
-        })
-      })
+    // if (this.props.state.labVariant) {
+    //   firebase.database().ref('labVariants').once('value', (snapshot) => {
+    //     snapshot.forEach((labVariant) => {
+    //       if (labVariant.val().labVariant === this.props.state.labVariant) {
+    //         labVariant.val().messages.forEach((message) => {
+    //           // set timeOut for receive message event
+    //           window.setTimeout(() => {
+    //             this.onReceiveMessage(message.message); // log message in firebase
+    //             // this.setState({messages: _.concat(this.state.messages, message)}) // set state for ChatBox
+    //           }, message.timeout)
+    //         })
+    //       }
+    //     })
+    //   })
+    // }
+    if (this.props.state.labVariant === 'v1') {
+
+    } else if (this.props.state.labVariant === 'v2') {
+
+    } else {
+      console.log('fuck something went wrong')
     }
     
   }
@@ -117,7 +120,7 @@ export default class LabPage extends Component {
     //unregister listeners
     firebase.database().ref('wordSearch').off();
     firebase.database().ref('settings/showAnswerKey').off();
-    firebase.database().ref('labVariants').off();
+    // firebase.database().ref('labVariants').off();
     firebase.database().ref("participants").off();
   }
 
