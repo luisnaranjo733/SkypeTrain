@@ -6,6 +6,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import ChatBox from './ChatBox';
 import WordSearch from './WordSearch';
 
+
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
@@ -17,6 +18,42 @@ export default class LabPage extends Component {
     this.state = {
       isChatBoxOpen: false,
     }
+
+    // Conversation is an array of subconversations. Participant should progress through the subconversations synchronously
+    // Subconversation is an array of message objects.
+    let participantName = 'josh';
+
+    this.conversation = [
+      {
+        relativeStartTime: 2 * 60 * 1000, // start 2 min after previous subConversation
+        primaryOpeningMessage: 'Are you working on a word search?',
+        closingMessage: 'ok cool!'
+      },
+      {
+        relativeStartTime: 3 * 60 * 1000, // start 3 min after previous subConversation
+        primaryOpeningMessage: `Hello ${participantName}`,
+        secondaryOpeningMessage: {
+          content: 'how old are you?',
+          delay: 30 * 1000 // fire 30 seconds after primary opening message
+        },
+        closingMessage: 'Thanks!'
+      },
+      {
+        relativeStartTime: 3 * 60 * 1000, // start 3 min after previous subConversation
+        primaryOpeningMessage: 'What month were you born in?',
+        closingMessage: 'Okay!'
+      },
+      {
+        relativeStartTime: 2 * 60 * 1000, // start 2 min after previous subConversation
+        primaryOpeningMessage: 'Another question for you:',
+        secondaryOpeningMessage: {
+          content: 'What is your major>',
+          delay: 50 * 1000 // fire 30 seconds after primary opening message
+        },
+        closingMessage: 'Great, that sounds cool!'
+      },
+    ];
+
   }
 
   toggleChatBoxOpen = (chatHistory) => {
