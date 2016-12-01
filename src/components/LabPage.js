@@ -5,7 +5,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import ChatBox from './ChatBox';
 import WordSearch from './WordSearch';
-
+import {convo1, convo2} from '../models/Conversations';
 
 // Needed for onTouchTap
 // http://stackoverflow.com/a/34015469/988941
@@ -16,44 +16,8 @@ export default class LabPage extends Component {
     super(props);
     this.context = context;
     this.state = {
-      isChatBoxOpen: false,
+      isChatBoxOpen: true,
     }
-
-    // Conversation is an array of subconversations. Participant should progress through the subconversations synchronously
-    // Subconversation is an array of message objects.
-    let participantName = 'josh';
-
-    this.conversation = [
-      {
-        relativeStartTime: 2 * 60 * 1000, // start 2 min after previous subConversation
-        primaryOpeningMessage: 'Are you working on a word search?',
-        closingMessage: 'ok cool!'
-      },
-      {
-        relativeStartTime: 3 * 60 * 1000, // start 3 min after previous subConversation
-        primaryOpeningMessage: `Hello ${participantName}`,
-        secondaryOpeningMessage: {
-          content: 'how old are you?',
-          delay: 30 * 1000 // fire 30 seconds after primary opening message
-        },
-        closingMessage: 'Thanks!'
-      },
-      {
-        relativeStartTime: 3 * 60 * 1000, // start 3 min after previous subConversation
-        primaryOpeningMessage: 'What month were you born in?',
-        closingMessage: 'Okay!'
-      },
-      {
-        relativeStartTime: 2 * 60 * 1000, // start 2 min after previous subConversation
-        primaryOpeningMessage: 'Another question for you:',
-        secondaryOpeningMessage: {
-          content: 'What is your major>',
-          delay: 50 * 1000 // fire 30 seconds after primary opening message
-        },
-        closingMessage: 'Great, that sounds cool!'
-      },
-    ];
-
   }
 
   toggleChatBoxOpen = (chatHistory) => {
@@ -102,6 +66,12 @@ export default class LabPage extends Component {
       firebase.database().ref('events').push(messageObj)
       // this.setState({messages: _.concat(this.state.messages, messageObj)})
     });
+
+    let subConvo = this.getCurrentSubConvo();
+    console.log(subConvo);
+    window.setTimeout(() => {
+      this.onReceiveMessage(subConvo.closingMessage.content);
+    }, subConvo.closingMessage.delay)
   }
 
   onReceiveMessage = (message) => {
@@ -118,6 +88,23 @@ export default class LabPage extends Component {
     });
   }
 
+  getCurrentSubConvo = () => {
+    if (this.state.subConvos && this.state.currentSubConvo >= 0) {
+      return this.state.subConvos[this.state.currentSubConvo];
+    }
+  }
+
+  beginCurrentSubConvo = () => {
+    let subConvo = this.getCurrentSubConvo();
+    console.log(subConvo)
+    this.onReceiveMessage(subConvo.primaryOpeningMessage);
+    if (subConvo.secondaryOpeningMessage) { // set timer for second message
+      window.setTimeout(() => {
+        this.onReceiveMessage(subConvo.secondaryOpeningMessage.content);
+      }, subConvo.secondaryOpeningMessage.delay)
+    } 
+  }
+
   componentDidMount = () => {
 
     firebase.database().ref('wordSearch').on('value', (snapshot) => {
@@ -126,38 +113,31 @@ export default class LabPage extends Component {
 
     firebase.database().ref('settings/showAnswerKey').on('value', (snapshot) => {
       this.setState({showAnswerKey: snapshot.val()})
-    })
+    });
 
-    // if (this.props.state.labVariant) {
-    //   firebase.database().ref('labVariants').once('value', (snapshot) => {
-    //     snapshot.forEach((labVariant) => {
-    //       if (labVariant.val().labVariant === this.props.state.labVariant) {
-    //         labVariant.val().messages.forEach((message) => {
-    //           // set timeOut for receive message event
-    //           window.setTimeout(() => {
-    //             this.onReceiveMessage(message.message); // log message in firebase
-    //             // this.setState({messages: _.concat(this.state.messages, message)}) // set state for ChatBox
-    //           }, message.timeout)
-    //         })
-    //       }
-    //     })
-    //   })
-    // }
-    if (this.props.state.labVariant === 'v1') {
-
-    } else if (this.props.state.labVariant === 'v2') {
-
-    } else {
-      console.log('fuck something went wrong')
-    }
-    
+    firebase.database().ref('settings/labVariant').on('value', (snapshot) => {
+      let subConvos;
+      if (snapshot.val() === 'v1') {
+        subConvos = convo1;
+      } else if (snapshot.val() === 'v2') {
+        subConvos = convo2;
+      }
+      this.setState({subConvos: subConvos, currentSubConvo: 0}, () => {
+        let subConvo = this.getCurrentSubConvo();
+        // need to set initial timeout, closingMessage() will set all future buffer timeouts between subconvos
+        window.setTimeout(() => {
+          this.beginCurrentSubConvo();
+        }, subConvo.relativeStartTime);
+        
+      });
+    });
   }
 
   componentWillUnmount() {
     //unregister listeners
     firebase.database().ref('wordSearch').off();
     firebase.database().ref('settings/showAnswerKey').off();
-    // firebase.database().ref('labVariants').off();
+    firebase.database().ref('settings/labVariant').off();
     firebase.database().ref("participants").off();
   }
 

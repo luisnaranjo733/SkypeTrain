@@ -69,6 +69,7 @@ export default class RegisterPage extends Component {
             floatingLabelFixed={false}
             errorText={this.state.formValid ? '' : 'This field is required'}
             onChange={this.validateForm}
+            autoFocus
           />
           <br/><br/>
           <RaisedButton onClick={this.submitButtonPressed} disabled={!this.state.formValid} style={{paddingLeft: '1em'}} label="Begin lab" primary={true}></RaisedButton>
