@@ -17,6 +17,7 @@ export default class LabPage extends Component {
     this.context = context;
     this.state = {
       isChatBoxOpen: true,
+      subConvoClosed: false
     }
   }
 
@@ -67,20 +68,25 @@ export default class LabPage extends Component {
       // this.setState({messages: _.concat(this.state.messages, messageObj)})
     });
 
-    let subConvo = this.getCurrentSubConvo();
-    console.log(subConvo);
-    window.setTimeout(() => {
-      this.onReceiveMessage(subConvo.closingMessage.content);
+    if (!this.state.subConvoClosed) {
+      console.log('sub convo open')
+      this.setState({subConvoClosed: true});
+      let subConvo = this.getCurrentSubConvo();
+      console.log(subConvo);
+      window.setTimeout(() => {
+        
+        this.onReceiveMessage(subConvo.closingMessage.content);
+        this.setState({currentSubConvo: this.state.currentSubConvo + 1}, () => {
+          // reset state for next subConvo
+          window.setTimeout(() => {
+            subConvo = this.getCurrentSubConvo(); // update subConvo to next
+            this.beginCurrentSubConvo();
+          }, subConvo.relativeStartTime);
+        })
 
-      this.setState({currentSubConvo: this.state.currentSubConvo + 1}, () => {
-        // reset state for next subConvo
-        window.setTimeout(() => {
-          subConvo = this.getCurrentSubConvo(); // update subConvo to next
-          this.beginCurrentSubConvo();
-        }, subConvo.relativeStartTime);
-      })
+      }, subConvo.closingMessage.delay)
+    } else {console.log('sub convo closed')}
 
-    }, subConvo.closingMessage.delay)
   }
 
   onReceiveMessage = (message) => {
@@ -104,6 +110,7 @@ export default class LabPage extends Component {
   }
 
   beginCurrentSubConvo = () => {
+    this.setState({subConvoClosed: false})
     let subConvo = this.getCurrentSubConvo();
     console.log(subConvo)
     this.onReceiveMessage(subConvo.primaryOpeningMessage);
