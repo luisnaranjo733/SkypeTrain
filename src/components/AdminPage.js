@@ -131,9 +131,27 @@ export class AdminPage extends Component {
       )
     }
 
+    let startLabEvent = this.state.events.filter((event) => {
+      return event.eventName === 'startLab'
+    });
     let firstTimestamp;
-    if (this.state.events[0]) {
-      firstTimestamp = this.state.events[0].timestamp;
+    if (startLabEvent && startLabEvent.length > 0) {
+      firstTimestamp = startLabEvent[0].timestamp;
+    }
+
+    let endLabEvent = this.state.events.filter((event) => {
+      return event.eventName === 'endLab';
+    });
+    let lastTimestamp;
+    if (endLabEvent && endLabEvent.length > 0) {
+      lastTimestamp = endLabEvent[0].timestamp;
+    }
+
+
+    let stats = {
+      timeOnWordSearch: 0,
+      timeOnChat: 0,
+      timeTotal: lastTimestamp - firstTimestamp,
     }
     
     return (
@@ -156,7 +174,6 @@ export class AdminPage extends Component {
               onToggle={this.props.toggleAnswerKey} style={styles.toggle} label="Show word search answers" defaultToggled={this.props.state.showAnswerKey} />
           </div>
 
-          <p>Variant: {this.props.state.labVariant}</p>
           {radioButtons}
 
           <SelectField
@@ -192,6 +209,12 @@ export class AdminPage extends Component {
               })}
             </ul>
 
+          <Divider />
+          <p>Lab variant: {this.props.state.labVariant}</p>
+          <p>Time spent on word search: Analysis not implemented yet</p>
+          <p>Time spent on chat: Analysis not implemented yet</p>
+          <p>Total time spent on lab: {stats.timeTotal / 1000 / 60} minutes</p>
+
         </Card>
       </div>
     );
@@ -204,6 +227,43 @@ export class EndPage extends Component {
   constructor(props, context) {
     super(props);
     this.context = context;
+
+    this.state = {
+      labEnded: false
+    }
+  }
+
+
+
+  forceEndLab = () => {
+    firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
+      firebase.database().ref('events').push({
+        participantKey: snapshot.key,
+        timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
+        eventName: 'endLab'
+      })
+    });
+  }
+
+  componentDidMount() {
+    firebase.database().ref('participants').limitToLast(1).once('child_added', (participant) => {
+      firebase.database().ref('events').on('value', (events) => {
+        events.forEach((event) => {
+          if (event.val().participantKey === participant.key) {
+            if (event.val().eventName === 'endLab') {
+              this.setState({labEnded: true});
+            }
+          }
+        })
+      })
+
+    })
+  }
+
+  componentWillUnmount() {
+    //unregister listeners
+    firebase.database().ref("participants").off();
+    firebase.database().ref("events").off();
   }
 
   render() {
@@ -213,6 +273,8 @@ export class EndPage extends Component {
           <CardTitle title="Done" subtitle="Thank you!" />
           <CardText>
             Thank you for participating in our lab!
+            {this.state.labEnded ? <span/> : <RaisedButton onClick={this.forceEndLab} label="End lab (ADMIN ONLY)" />}
+            
           </CardText>
         </Card>
       </div>

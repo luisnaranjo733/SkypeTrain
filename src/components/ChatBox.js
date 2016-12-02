@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import firebase from 'firebase';
 import {HotKeys} from 'react-hotkeys';
