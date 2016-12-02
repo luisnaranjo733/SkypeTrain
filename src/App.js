@@ -104,6 +104,7 @@ class App extends Component {
         </MuiThemeProvider>
       )
     }
+    appBar = null;
 
     let children = (
       this.props.children && React.cloneElement(this.props.children, {
