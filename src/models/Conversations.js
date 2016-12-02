@@ -49,23 +49,35 @@ export let convo1 = [
 
 export let convo2 = [
     {
-        relativeStartTime: 2 * 60 * 1000, // start 2 min after previous subConversation
+        relativeStartTime: 2 * 1000, // start 2 min after previous subConversation
         primaryOpeningMessage: 'Are you working on a word search?',
-        closingMessage: 'ok cool!'
+        closingMessage: {
+            content: 'ok cool!',
+            delay: 1000
+        }
     },
     {
-        relativeStartTime: 3 * 60 * 1000, // start 3 min after previous subConversation
+        relativeStartTime: 3 * 1000, // start 3 min after previous subConversation
         primaryOpeningMessage: `Hello! How old are you?`,
-        closingMessage: 'Thanks!'
+        closingMessage: {
+            content: 'Thanks!',
+            delay: 1000
+        }
     },
     {
-        relativeStartTime: 3 * 60 * 1000, // start 3 min after previous subConversation
+        relativeStartTime: 3 * 1000, // start 3 min after previous subConversation
         primaryOpeningMessage: 'What month were you born in?',
-        closingMessage: 'Okay!'
+        closingMessage: {
+            content: 'Okay!',
+            delay: 1000
+        }
     },
     {
-        relativeStartTime: 2 * 60 * 1000, // start 2 min after previous subConversation
+        relativeStartTime: 2 * 1000, // start 2 min after previous subConversation
         primaryOpeningMessage: 'Another question for you, what is your major?',
-        closingMessage: 'Great, that sounds cool!'
+        closingMessage: {
+            content: 'Great, that sounds cool!',
+            delay: 1000
+        }
     },
 ];
