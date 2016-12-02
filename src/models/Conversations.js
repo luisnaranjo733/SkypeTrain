@@ -4,7 +4,7 @@
 
 export let convo1 = [
     {
-        relativeStartTime: 2 * 1 * 1000, // start 2 min after previous subConversation
+        relativeStartTime: 2 * 60 * 1000, // start 2 min after previous subConversation
         primaryOpeningMessage: 'Are you working on a word search?',
         closingMessage: {
             content: 'ok cool!',
