@@ -16,7 +16,7 @@ export default class LabPage extends Component {
     super(props);
     this.context = context;
     this.state = {
-      isChatBoxOpen: true,
+      isChatBoxOpen: false,
       secondaryMessageReceived: false,
     }
   }
@@ -26,7 +26,6 @@ export default class LabPage extends Component {
     // if chatBox is about to open, then we set all unread messages to read
     if (!this.state.isChatBoxOpen) {
       chatHistory.forEach((message) => {
-        // console.log(message)
         firebase.database().ref('events').child(message.messageKey).update({unread: false});
       })
     }
@@ -69,10 +68,8 @@ export default class LabPage extends Component {
     });
 
     if (this.state.secondaryMessageReceived) {
-      console.log('sub convo open')
       this.setState({secondaryMessageReceived: false});
       let subConvo = this.getCurrentSubConvo();
-      console.log(subConvo);
       window.setTimeout(() => {
         
         this.onReceiveMessage(subConvo.closingMessage.content);
@@ -80,14 +77,12 @@ export default class LabPage extends Component {
           // reset state for next subConvo
           window.setTimeout(() => {
             subConvo = this.getCurrentSubConvo(); // update subConvo to next
-            console.log('scheduled')
-            console.log(subConvo)
             this.beginCurrentSubConvo();
           }, subConvo.relativeStartTime);
         })
 
       }, subConvo.closingMessage.delay)
-    } else {console.log('sub convo closed')}
+    } 
 
   }
 
@@ -115,7 +110,6 @@ export default class LabPage extends Component {
     
     let subConvo = this.getCurrentSubConvo();
     if (subConvo) {
-      console.log(subConvo)
       this.onReceiveMessage(subConvo.primaryOpeningMessage);
       if (subConvo.secondaryOpeningMessage) { // set timer for second message
         window.setTimeout(() => {
