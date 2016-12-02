@@ -122,9 +122,17 @@ class HiddenChatBox extends Component {
     return (
       <List className='hiddenChatBox' style={{paddingTop: '0px', paddingBottom: '8px'}}>
         <AppBar
+          style={this.props.nUnreadMessages > 0 ? {
+            backgroundColor: '#B71C1C'
+          }: {}}
           className='myAppBar'
           title={
             <span className='chatBoxTitle'>Chat {nUnreadMessages}</span>
+          }
+          titleStyle={
+            this.props.nUnreadMessages > 0 ? {
+              color: 'white',
+            } : {}
           }
           showMenuIconButton={false}
           onTitleTouchTap={this.props.toggleChatBox}
