@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import _ from 'lodash';
 import firebase from 'firebase';
 import {HotKeys} from 'react-hotkeys';
@@ -30,22 +31,8 @@ let style = {
   }
 };
 
-class VisibleChatBox extends Component {
-
-  onInputChanged = (e) => {
-    this.props.onInputChanged(e);
-  }
-
+class MessageList extends Component {
   render() {
-    const keyboardEvents = {
-      keyMap: {
-        enter: 'enter'
-      },
-      handlers: {
-       enter: this.props.onSendMessage
-      }
-    }
-
     let messageList = this.props.chatHistory.map((message, i) => { // loop over messages from labVariant prototype
       // if there is a sender defined, else the user is sending
       if (message.sender) {
@@ -72,6 +59,53 @@ class VisibleChatBox extends Component {
     });
 
     return (
+      <div className='message-list'>
+        {messageList}
+      </div>
+    )
+  }
+
+  componentWillUpdate = () => {
+    console.log('asdf')
+    var node = ReactDOM.findDOMNode(this);
+    console.log(node);
+    this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+    console.log(this.shouldScrollBottom)
+    console.log(node.scrollTop)
+    console.log(node.offsetHeight)
+    console.log(node.scrollHeight)
+  }
+  
+  componentDidUpdate = () => {
+    if (this.shouldScrollBottom) {
+      console.log(this.refs)
+      console.log('refs')
+      var node = ReactDOM.findDOMNode(this)
+      node.scrollTop = node.scrollHeight
+      console.log('scroll')
+    }
+    console.log('b')
+  }
+
+}
+
+class VisibleChatBox extends Component {
+
+  onInputChanged = (e) => {
+    this.props.onInputChanged(e);
+  }
+
+  render() {
+    const keyboardEvents = {
+      keyMap: {
+        enter: 'enter'
+      },
+      handlers: {
+       enter: this.props.onSendMessage
+      }
+    }
+
+    return (
       <List className='visibleChatBox' style={{paddingTop: '0px', paddingBottom: '8px'}}>
         <AppBar
           title={
@@ -82,9 +116,8 @@ class VisibleChatBox extends Component {
           onRightIconButtonTouchTap={this.props.toggleChatBox}
           onTitleTouchTap={this.props.toggleChatBox}
         />
-        <div className='message-list'>
-          {messageList}
-        </div>
+
+        <MessageList chatHistory={this.props.chatHistory}/>
 
         <HotKeys keyMap={keyboardEvents.keyMap} handlers={keyboardEvents.handlers}>
           <TextField
