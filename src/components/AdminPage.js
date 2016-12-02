@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import firebase from 'firebase';
+import moment from 'moment';
 
 import {Card, CardTitle, CardText} from 'material-ui/Card';
 import Toggle from 'material-ui/Toggle';
@@ -131,28 +132,30 @@ export class AdminPage extends Component {
       )
     }
 
-    let startLabEvent = this.state.events.filter((event) => {
-      return event.eventName === 'startLab'
-    });
-    let firstTimestamp;
-    if (startLabEvent && startLabEvent.length > 0) {
-      firstTimestamp = startLabEvent[0].timestamp;
-    }
-
-    let endLabEvent = this.state.events.filter((event) => {
-      return event.eventName === 'endLab';
-    });
-    let lastTimestamp;
-    if (endLabEvent && endLabEvent.length > 0) {
-      lastTimestamp = endLabEvent[0].timestamp;
-    }
-
-
     let stats = {
       timeOnWordSearch: 0,
       timeOnChat: 0,
-      timeTotal: lastTimestamp - firstTimestamp,
+      totalLabDuration: null
     }
+
+    let startLabEvent = this.state.events.filter((event) => {
+      return event.eventName === 'startLab'
+    });
+    let endLabEvent = this.state.events.filter((event) => {
+      return event.eventName === 'endLab';  
+    });
+
+    let startLabEventMoment;
+    let endLabEventMoment;
+    if ((startLabEvent && startLabEvent.length > 0) && (endLabEvent && endLabEvent.length > 0)) {
+      startLabEventMoment = moment(startLabEvent[0].timestamp);
+      endLabEventMoment = moment(endLabEvent[0].timestamp);
+      
+      let diffTime = endLabEventMoment.diff(startLabEventMoment);
+      let duration = moment.duration(diffTime);
+      stats.totalLabDuration = duration;
+    }
+
     
     return (
       <div>
@@ -194,7 +197,7 @@ export class AdminPage extends Component {
                 return (
                   <li key={i}>{event.eventName}
                     <ul>
-                      <li>Seconds from start of lab {(event.timestamp - firstTimestamp) / 1000}</li>
+                      <li>Seconds from start of lab {moment(event.timestamp).diff(startLabEventMoment, 'seconds')}</li>
                       {event.labVariant ? 
                         <li>Lab variant: {event.labVariant}</li> :
                         <span/>
@@ -213,7 +216,12 @@ export class AdminPage extends Component {
           <p>Lab variant: {this.props.state.labVariant}</p>
           <p>Time spent on word search: Analysis not implemented yet</p>
           <p>Time spent on chat: Analysis not implemented yet</p>
-          <p>Total time spent on lab: {stats.timeTotal / 1000 / 60} minutes</p>
+          {endLabEventMoment && startLabEventMoment ?
+            <p>Total time spent on lab: {stats.totalLabDuration.minutes()} minutes and {stats.totalLabDuration.seconds()} seconds</p>
+            :
+            <span/>
+          }
+          
 
         </Card>
       </div>
