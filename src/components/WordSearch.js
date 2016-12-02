@@ -110,7 +110,6 @@ class WordSearchWords extends Component {
   render() {
     return (
       <div id="word-search-words">
-        {<h1>Lab variant {this.props.labVariant}</h1>}
         <ul>
           {this.props.words.map((word, i) => {
             return <li key={i} className={this.getClassName(word)}>{word.word}</li>
