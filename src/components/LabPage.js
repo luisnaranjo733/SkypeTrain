@@ -18,6 +18,7 @@ export default class LabPage extends Component {
     this.state = {
       isChatBoxOpen: false,
       secondaryMessageReceived: false,
+      nWordSearchCompleted: 0
     }
   }
 
@@ -43,14 +44,18 @@ export default class LabPage extends Component {
 
   onWordSearchComplete = () => {
     firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
-      firebase.database().ref('events').push({
-        participantKey: snapshot.key,
-        timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
-        eventName: 'endLab'
-      })
+      window.setTimeout(() => {
+        firebase.database().ref('events').push({
+          participantKey: snapshot.key,
+          timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
+          eventName: 'finishedWordSearch'
+        })
+      }, 10)
+
     });
 
-    this.context.router.push('/end');
+    // generate a new wordSearch
+    this.setState({nWordSearchCompleted: this.state.nWordSearchCompleted + 1});
   }
 
   onSendMessage = (message) => {
@@ -125,7 +130,21 @@ export default class LabPage extends Component {
 
   componentDidMount = () => {
 
-    firebase.database().ref('wordSearch').on('value', (snapshot) => {
+    window.setTimeout(() => {
+      console.log('END OF LAB');
+      firebase.database().ref('participants').limitToLast(1).once('child_added', (snapshot) => {
+        console.log('sending end event')
+        firebase.database().ref('events').push({
+          participantKey: snapshot.key,
+          timestamp: firebase.database.ServerValue.TIMESTAMP, // time since the Unix epoch, in milliseconds
+          eventName: 'endLab'
+        }, () => this.context.router.push('/end'))
+      });
+
+       
+    }, 30 * 1000)
+
+    firebase.database().ref('wordSearch2').on('value', (snapshot) => {
       this.setState({wordSearchParams: snapshot.val()});
     });
 
@@ -173,15 +192,17 @@ export default class LabPage extends Component {
   render() {
     return (
 
-        <div>      
-          {this.state.wordSearchParams ? 
-            <WordSearch labVariant={this.props.state.labVariant} showAnswerKey={this.state.showAnswerKey} 
-              wordList={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height}
-              width={this.state.wordSearchParams.width} onWordSearchComplete={this.onWordSearchComplete}
-              onWordCompleted={this.onWordCompleted}
-            />
-            : <p>Loading</p>
-          }
+        <div> 
+          <div key={this.state.nWordSearchCompleted}>    
+            {this.state.wordSearchParams ? 
+              <WordSearch labVariant={this.props.state.labVariant} showAnswerKey={this.state.showAnswerKey} 
+                wordList={this.state.wordSearchParams.words} height={this.state.wordSearchParams.height}
+                width={this.state.wordSearchParams.width} onWordSearchComplete={this.onWordSearchComplete}
+                onWordCompleted={this.onWordCompleted}
+              />
+              : <p>Loading</p>
+            }
+          </div>
           <ChatBox onReceiveMessage={this.onReceiveMessage} onSendMessage={this.onSendMessage} isChatBoxOpen={this.state.isChatBoxOpen} toggleChatBoxOpen={this.toggleChatBoxOpen}/>
         </div>
       
