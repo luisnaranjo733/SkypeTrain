@@ -8,8 +8,8 @@ body {
 
 .show-grid {
   padding-top: 1.5em;
-  /*border: 1px solid red; */
-  /*max-height: 77vh;*/
+  border: 1px solid red; 
+  max-height: 77vh;
   overflow: auto;
 }
 
@@ -112,7 +112,7 @@ body {
     right: 0;
 
     width: 90vw;
-    height: 90vh;
+    height: 80vh;
     margin-left: auto;
     margin-right: auto;
 
