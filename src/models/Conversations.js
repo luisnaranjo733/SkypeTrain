@@ -17,7 +17,7 @@ export let convo1 = [
         primaryOpeningMessage: `Hello!`,
         secondaryOpeningMessage: {
             content: 'how old are you?',
-            delay: 30 * 1000 // fire 30 seconds after primary opening message
+            delay: 3 * 1000 // fire 30 seconds after primary opening message
         },
         closingMessage: {
             content: 'Thanks!',
@@ -38,7 +38,7 @@ export let convo1 = [
         primaryOpeningMessage: 'Another question for you:',
         secondaryOpeningMessage: {
             content: 'What is your major>',
-            delay: 50 * 1000 // fire 30 seconds after primary opening message
+            delay: 5 * 1000 // fire 30 seconds after primary opening message
         },
         closingMessage: {
             content: 'Great, that sounds cool!',

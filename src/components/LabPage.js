@@ -80,6 +80,8 @@ export default class LabPage extends Component {
           // reset state for next subConvo
           window.setTimeout(() => {
             subConvo = this.getCurrentSubConvo(); // update subConvo to next
+            console.log('scheduled')
+            console.log(subConvo)
             this.beginCurrentSubConvo();
           }, subConvo.relativeStartTime);
         })
@@ -112,16 +114,19 @@ export default class LabPage extends Component {
   beginCurrentSubConvo = () => {
     
     let subConvo = this.getCurrentSubConvo();
-    console.log(subConvo)
-    this.onReceiveMessage(subConvo.primaryOpeningMessage);
-    if (subConvo.secondaryOpeningMessage) { // set timer for second message
-      window.setTimeout(() => {
-        this.onReceiveMessage(subConvo.secondaryOpeningMessage.content);
-        this.setState({secondaryMessageReceived: true})
-      }, subConvo.secondaryOpeningMessage.delay)
-    } else {
-      this.setState({secondaryMessageReceived: true});
+    if (subConvo) {
+      console.log(subConvo)
+      this.onReceiveMessage(subConvo.primaryOpeningMessage);
+      if (subConvo.secondaryOpeningMessage) { // set timer for second message
+        window.setTimeout(() => {
+          this.onReceiveMessage(subConvo.secondaryOpeningMessage.content);
+          this.setState({secondaryMessageReceived: true})
+        }, subConvo.secondaryOpeningMessage.delay)
+      } else {
+        this.setState({secondaryMessageReceived: true});
+      }
     }
+
   }
 
   componentDidMount = () => {

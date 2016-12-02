@@ -65,27 +65,6 @@ class MessageList extends Component {
     )
   }
 
-  componentWillUpdate = () => {
-    console.log('asdf')
-    var node = ReactDOM.findDOMNode(this);
-    console.log(node);
-    this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
-    console.log(this.shouldScrollBottom)
-    console.log(node.scrollTop)
-    console.log(node.offsetHeight)
-    console.log(node.scrollHeight)
-  }
-  
-  componentDidUpdate = () => {
-    if (this.shouldScrollBottom) {
-      console.log(this.refs)
-      console.log('refs')
-      var node = ReactDOM.findDOMNode(this)
-      node.scrollTop = node.scrollHeight
-      console.log('scroll')
-    }
-    console.log('b')
-  }
 
 }
 
@@ -139,16 +118,6 @@ class VisibleChatBox extends Component {
 class HiddenChatBox extends Component {
   render() {
     let nUnreadMessages = this.props.nUnreadMessages ? <span className='nUnreadMessages'>({this.props.nUnreadMessages})</span> : <span/>;
-    // let nUnreadMessages;
-
-    // console.log(`nUnreadMessages: ${this.props.nUnreadMessages}`);
-    // if (this.props.nUnreadMessages) {
-    //   console.log('we have unread')
-    //   nUnreadMessages = <span className='nUnreadMessages'>({this.props.nUnreadMessages})</span>;
-    // } else {
-    //   console.log('we dont have unread')
-    //   nUnreadMessages = <span/>;
-    // }
 
     return (
       <List className='hiddenChatBox' style={{paddingTop: '0px', paddingBottom: '8px'}}>
@@ -199,11 +168,9 @@ export default class ChatBox extends Component {
           if (event.val().participantKey === participant.key && _.includes(['sendMessage', 'receiveMessage'], event.val().eventName) ) { // filter by participant and receiveMessage
             let modifiedEvent = event.val();
             modifiedEvent['messageKey'] = event.key;
-            // console.log(modifiedEvent)
             events.push(modifiedEvent);
           }
         });
-        // console.log(events);
         this.setState({chatHistory: events});
       });
     });
