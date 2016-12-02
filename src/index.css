@@ -112,7 +112,7 @@ body {
     right: 0;
 
     width: 90vw;
-    height: 80vh;
+    max-height: 80vh;
     margin-left: auto;
     margin-right: auto;
 
@@ -126,7 +126,7 @@ body {
 .message-list {
   /*border: 1px solid red;*/
   display: block;
-  overflow: auto;
+  overflow: scroll;
   height: 80vh;
   margin-bottom: 500px;
   /*margin-bottom: 500px;*/

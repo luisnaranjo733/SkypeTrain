@@ -17,7 +17,7 @@ export default class LabPage extends Component {
     this.context = context;
     this.state = {
       isChatBoxOpen: true,
-      subConvoClosed: false
+      secondaryMessageReceived: false,
     }
   }
 
@@ -68,9 +68,9 @@ export default class LabPage extends Component {
       // this.setState({messages: _.concat(this.state.messages, messageObj)})
     });
 
-    if (!this.state.subConvoClosed) {
+    if (this.state.secondaryMessageReceived) {
       console.log('sub convo open')
-      this.setState({subConvoClosed: true});
+      this.setState({secondaryMessageReceived: false});
       let subConvo = this.getCurrentSubConvo();
       console.log(subConvo);
       window.setTimeout(() => {
@@ -110,15 +110,18 @@ export default class LabPage extends Component {
   }
 
   beginCurrentSubConvo = () => {
-    this.setState({subConvoClosed: false})
+    
     let subConvo = this.getCurrentSubConvo();
     console.log(subConvo)
     this.onReceiveMessage(subConvo.primaryOpeningMessage);
     if (subConvo.secondaryOpeningMessage) { // set timer for second message
       window.setTimeout(() => {
         this.onReceiveMessage(subConvo.secondaryOpeningMessage.content);
+        this.setState({secondaryMessageReceived: true})
       }, subConvo.secondaryOpeningMessage.delay)
-    } 
+    } else {
+      this.setState({secondaryMessageReceived: true});
+    }
   }
 
   componentDidMount = () => {
