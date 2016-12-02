@@ -101,6 +101,9 @@ export default class LabPage extends Component {
         eventName: 'receiveMessage',
         message: message,
         unread: true,
+      }, () => {
+        var audio = document.getElementById("audio");
+        audio.play();
       })
     });
   }
@@ -142,9 +145,9 @@ export default class LabPage extends Component {
       });
 
        
-    }, 30 * 1000)
+    }, 15 * 60 * 1000)
 
-    firebase.database().ref('wordSearch2').on('value', (snapshot) => {
+    firebase.database().ref('wordSearch').on('value', (snapshot) => {
       this.setState({wordSearchParams: snapshot.val()});
     });
 
