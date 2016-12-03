@@ -28,6 +28,33 @@ body {
   /*height: 70vh;*/
 }
 
+.letter {
+  width: 1.50em;
+  height: 1.50em;
+  text-align: center;
+  line-height: 1.50em;
+  font-family: 'Muli', sans-serif;
+  /*border: 0.1px solid red;*/
+}
+
+.highlighted-letter {
+  background-color: #9575CD;
+  width: 1.50em;
+  height: 1.50em;
+  text-align: center;
+  line-height: 1.50em;
+  font-family: 'Muli', sans-serif;
+}
+
+.solved-letter {
+  background-color:grey;
+  width: 1.50em;
+  height: 1.50em;
+  text-align: center;
+  line-height: 1.50em;
+  font-family: 'Muli', sans-serif;
+}
+
 .row {
   display: flex;
   flex-direction: row; /* default val for clarity */
@@ -36,32 +63,7 @@ body {
   /*border: 1px solid green;*/
 }
 
-.letter {
-  width: 1.70em;
-  height: 1.70em;
-  text-align: center;
-  line-height: 1.70em;
-  font-family: 'Muli', sans-serif;
-  /*border: 0.1px solid red;*/
-}
 
-.highlighted-letter {
-  background-color: #9575CD;
-  width: 1.70em;
-  height: 1.70em;
-  text-align: center;
-  line-height: 1.70em;
-  font-family: 'Muli', sans-serif;
-}
-
-.solved-letter {
-  background-color:grey;
-  width: 1.70em;
-  height: 1.70em;
-  text-align: center;
-  line-height: 1.70em;
-  font-family: 'Muli', sans-serif;
-}
 
 .solved-word {
   text-decoration: line-through;
