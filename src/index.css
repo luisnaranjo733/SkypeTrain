@@ -7,14 +7,25 @@ body {
 }
 
 .show-grid {
-  padding-top: 1.5em;
+  padding-top: 5vh;
   /*border: 1px solid red; */
-  max-height: 90vh;
-  overflow: auto;
+  /*max-height: 90vh;
+  overflow: auto;*/
 }
 
 #grid {
   border: 1px solid black;
+  max-height: 80vh;
+  overflow: auto;
+}
+
+#word-search-words {
+  padding-left: 5em;
+}
+
+#word-search-words > ul {
+  overflow: auto;
+  /*height: 70vh;*/
 }
 
 .row {
@@ -61,14 +72,7 @@ body {
   
 }
 
-#word-search-words {
-  padding-left: 5em;
-}
 
-#word-search-words > ul {
-  overflow: auto;
-  height: 70vh;
-}
 
 .message-item {
   color: #212121;
