@@ -17,7 +17,7 @@ export let convo1 = [
         primaryOpeningMessage: `Hello!`,
         secondaryOpeningMessage: {
             content: 'how old are you?',
-            delay: 15 * 1000 // fire 15 seconds after primary opening message
+            delay: 20 * 1000 // fire 15 seconds after primary opening message
         },
         closingMessage: {
             content: 'Thanks!',
@@ -37,8 +37,8 @@ export let convo1 = [
         relativeStartTime: 3 * 60 * 1000, // start 3 min after previous subConversation
         primaryOpeningMessage: 'Another question for you:',
         secondaryOpeningMessage: {
-            content: 'What is your major>',
-            delay: 15 * 1000 // fire 15 seconds after primary opening message
+            content: 'What is your major?',
+            delay: 20 * 1000 // fire 15 seconds after primary opening message
         },
         closingMessage: {
             content: 'Great, that sounds cool!',

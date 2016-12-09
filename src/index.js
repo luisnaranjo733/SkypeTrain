@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import LabPage from './components/LabPage';
 import RegisterPage from './components/RegisterPage';
+import CsvPage from './components/CsvPage';
 import {AdminPage, EndPage} from './components/AdminPage';
 
 import './index.css';
@@ -27,6 +28,7 @@ ReactDOM.render(
       <IndexRoute component={RegisterPage}/>
       <Route path="/lab" component={LabPage}/>
       <Route path="/admin" component={AdminPage} />
+      <Route path="/admin/csv" component={CsvPage} />
       <Route path="/end" component={EndPage} />
 
     </Route>

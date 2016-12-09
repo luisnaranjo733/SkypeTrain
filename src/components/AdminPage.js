@@ -161,6 +161,7 @@ export class AdminPage extends Component {
       <div>
         <Card>
           <CardTitle title="Admin" subtitle="Settings" />
+          <RaisedButton primary={true} onClick={() => this.context.router.push('/admin/csv')} label="Go to csv" />
           <CardText>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
             Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
@@ -168,7 +169,8 @@ export class AdminPage extends Component {
             Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
           </CardText>
 
-          <RaisedButton primary={true} onClick={() => this.context.router.push('/lab')} label="Go to lab" />
+          <RaisedButton primary={true} onClick={() => this.context.router.push('/')} label="Go to registration" />
+          <RaisedButton primary={true} onClick={() => this.context.router.push('/lab')} label="Go to wordsearch" />
 
           <br/><br/>
 

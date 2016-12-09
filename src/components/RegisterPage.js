@@ -56,12 +56,6 @@ export default class RegisterPage extends Component {
       <div>
         <Card>
           <CardTitle title="Introduction" subtitle="Typing Lab" />
-          <CardText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-          </CardText>
 
           <TextField
             style={{paddingLeft: '1em'}}
