@@ -34,7 +34,8 @@ export class AdminPage extends Component {
       let lastParticipantKey; // last participant's firebase key, used for default select field value
 
       snapshot.forEach((item) => {
-        menuItems.push(<MenuItem key={i} value={item.key} primaryText={item.val().name} />);
+        // menuItems.push(<MenuItem key={i} value={item.key} primaryText={item.val().name} />);
+        menuItems.push(<MenuItem key={i} value={item.key} primaryText={`Participant #${i}`} />);
         i += 1;
         lastParticipantKey = item.key;
       });
