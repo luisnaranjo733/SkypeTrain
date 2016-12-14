@@ -118,9 +118,10 @@ export default class CsvPage extends Component {
         <p>Omitted the following participants from statistics aggregation due to untrustworthy data:</p>
         <ul>
           {ommitedParticipants.map((participant) => {
-            return <li key={participant.id}>Participant #{participant.id}: {participant.name}</li>
+            return <li key={participant.id}>Participant #{participant.id}</li>
           })}
-        </ul>
+        </ul> 
+        <p>Our data got corrupted for these two participants, so we omit it from analysis. For some reason, the open chat events never got logged for these 2 participants, so we have no way of knowing how much time they spent on the lab for our analysis</p>
 
         <Divider />
 

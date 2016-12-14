@@ -161,16 +161,27 @@ export class AdminPage extends Component {
       <div>
         <Card>
           <CardTitle title="Admin" subtitle="Settings" />
-          <RaisedButton primary={true} onClick={() => this.context.router.push('/admin/csv')} label="Go to csv" />
+
           <CardText>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+            This is the admin page for our lab. It can be accessed by visiting the /admin page of the URL.
+            There is no access control, but we never include any hyperlinks to this page so that our lab participants do not accidentally stumble upon it.
+
+            From this page we can perform the following operations:
+            <ul>
+              <li>View log data for a specific participant</li>
+              <li>Delete log data for a specific participant if necessary</li>
+              <li>Toggle between lab variant 1 and 2 (control the two levels of our lab)</li>
+              <li>Toggle showing the answer key (we used this for pilot testing the lab)</li>
+              <li>Navigate to the CSV report for all the participants, which we used to analyze our data</li>
+              <li>Navigate to both of our lab pages if needed</li>
+            </ul>
           </CardText>
 
-          <RaisedButton primary={true} onClick={() => this.context.router.push('/')} label="Go to registration" />
-          <RaisedButton primary={true} onClick={() => this.context.router.push('/lab')} label="Go to wordsearch" />
+          <RaisedButton primary={true} onClick={() => this.context.router.push('/admin/csv')} label="Go to csv report of all lab participants" />
+          <br/><br/>
+          <RaisedButton primary={true} onClick={() => this.context.router.push('/')} label="Go to lab registration page" />
+          <br/><br/>
+          <RaisedButton primary={true} onClick={() => this.context.router.push('/lab')} label="Go to lab page" />
 
           <br/><br/>
 
@@ -190,7 +201,7 @@ export class AdminPage extends Component {
             {this.state.menuItems}
           </SelectField>
 
-          <RaisedButton primary={true} onClick={this.onDeleteParticipantData} label="Delete this participant" />
+          <RaisedButton disabled={true} primary={true} onClick={this.onDeleteParticipantData} label="Delete this participant" />
 
           <Divider />
 
@@ -213,17 +224,6 @@ export class AdminPage extends Component {
                 )
               })}
             </ul>
-
-          <Divider />
-          <p>Lab variant: {this.props.state.labVariant}</p>
-          <p>Time spent on word search: Analysis not implemented yet</p>
-          <p>Time spent on chat: Analysis not implemented yet</p>
-          {endLabEventMoment && startLabEventMoment ?
-            <p>Total time spent on lab: {stats.totalLabDuration.minutes()} minutes and {stats.totalLabDuration.seconds()} seconds</p>
-            :
-            <span/>
-          }
-          
 
         </Card>
       </div>
